@@ -14,7 +14,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-var SpatialHash = class SpatialHash {
+var HashBounds = class HashBounds {
     constructor(size) {
         this.size = size;
         this.map = {};
@@ -139,4 +139,4 @@ var SpatialHash = class SpatialHash {
         
     }
 }
-module.exports = SpatialHash
+module.exports = HashBounds
