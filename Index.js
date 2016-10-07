@@ -15,11 +15,16 @@
     limitations under the License.
 */
 var HashBounds = class HashBounds {
-    constructor(size) {
+    constructor(size,pn) {
         this.size = size;
         this.map = {};
         this.key = 0;
+        this.pn = pn;
+        this.allnodes = [];
         this.data = {}
+    }
+    getLength() {
+     return this.allnodes.length   
     }
     getNxt() {
         return this.key ++;
@@ -52,9 +57,11 @@ var HashBounds = class HashBounds {
         return result
     }
     getKey(xy) {
-        return {x:Math.floor(xy.x/this.size), y:Math.floor(xy.y/this.size)}
+        return {x:Math.min(Math.floor(xy.x/this.size),0),y:Math.min(Math.floor(xy.y/this.size),0)}
     }
     delete(node) {
+        var ind = this.allnodes.indexOf(node)
+        if (ind != -1) this.allnodes.splice(node)
         if (!node.hash) return false;
          var a = node.hash.a
          var b = node.hash.b
@@ -105,6 +112,15 @@ var HashBounds = class HashBounds {
     }
 
     insert(node) {
+        if (this.pn) {
+            node.bounds = {
+      x: node.position.x - node.size,
+      y: node.position.y - node.size,
+      width: node.size * 2,
+      height: node.size * 2
+  }
+        }
+        if (this.allnodes.indexOf(node) == -1) this.allnodes.push(node)
         var p1 = {x:node.bounds.x,y:node.bounds.y}
         var p2 = {x:node.bounds.x + node.bounds.width,y: node.bounds.y + node.bounds.height}
         var a = this.getKey(p1)
@@ -131,12 +147,6 @@ var HashBounds = class HashBounds {
             }
             
         }
-        
-        if (!this.map[a]) this.map[a] = [];
-        if (!this.map[b]) this.map[b] = [];
-        this.map[a].push(node.hash)
-        this.map[b].push(node.hash)
-        
     }
 }
 module.exports = HashBounds
