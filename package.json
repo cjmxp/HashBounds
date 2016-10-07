@@ -1,6 +1,6 @@
 {
   "name": "hashbounds",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "A bound-based spatial hashing system",
   "main": "Index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "bounds"
   ],
   "author": "Andrews54757",
-  "license": "Apache-2.0",
+  "license": "GNU-AGPLv3",
   "bugs": {
     "url": "https://github.com/AJS-development/HashBounds/issues"
   },
