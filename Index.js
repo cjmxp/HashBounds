@@ -57,7 +57,7 @@ var HashBounds = class HashBounds {
         return result
     }
     getKey(xy) {
-        return {x:Math.min(Math.floor(xy.x/this.size),0),y:Math.min(Math.floor(xy.y/this.size),0)}
+        return {x:Math.max(Math.floor(xy.x/this.size),0),y:Math.max(Math.floor(xy.y/this.size),0)}
     }
     delete(node) {
         var ind = this.allnodes.indexOf(node)
