@@ -65,7 +65,7 @@ var HashBounds = class HashBounds {
         if (!node.hash) return false;
          var a = node.hash.a
          var b = node.hash.b
-        
+        if (!a || !b) return false;
         
           for (var i = a.y; i < b.y + 1; i++) {
             for (var j = a.x; j < b.x + 1; j++) {
@@ -79,7 +79,7 @@ var HashBounds = class HashBounds {
             
         }
         this.data[node.hash.id] = false;
-        node.hash = [];
+        node.hash = false;
         return true;
     }
     update(node) {
