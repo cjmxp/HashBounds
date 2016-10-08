@@ -40,16 +40,18 @@ var HashBounds = class HashBounds {
         var a = this.getKey(p1)
         var b = this.getKey(p2)
        
-        var n = ""
+        var table = {}; // hashtable
         var result = [];
          for (var i = a.y; i < b.y + 1; i++) {
             for (var j = a.x; j < b.x + 1; j++) {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
                  // n += ke + "|" + this.map[ke].length + ","
+                       
                 this.map[ke].forEach((node)=>{
+                       if (table[node.key]) return
                     result.push(this.data[node.key])
-                    
+                   table[node.key] = true; 
                 })
                 }
             }
