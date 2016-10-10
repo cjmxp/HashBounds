@@ -75,7 +75,7 @@ var HashBounds = class HashBounds {
             for (var j = a.x; j < b.x + 1; j++) {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
-                if (this.map[ke][node.hash.key]) delete this.map[ke][node.hash.key]
+                if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = undefined
                     }
             }
             
@@ -100,7 +100,7 @@ var HashBounds = class HashBounds {
                 if (!(i > c.y && i < d.y && j > c.x && j < d.x)) {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
-                if (this.map[ke][node.hash.key]) delete this.map[ke][node.hash.key]
+                if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = undefined
                     }
                     }
             }
