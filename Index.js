@@ -140,8 +140,6 @@ var HashBounds = class HashBounds {
                 var ke = j + ":" + i;
       
                 if (!this.map[ke]) this.map[ke] = {};
-                if (this.map[ke].indexOf(node.hash) == -1)
-                    node.hash.id += ke + ","
                 this.map[ke][node.hash.key] = node.hash
             }
             
