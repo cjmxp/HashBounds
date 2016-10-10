@@ -24,6 +24,7 @@ var HashBounds = class HashBounds {
         this.pn = pn;
         this.allnodes = [];
         this.data = {}
+        
     }
     getLength() {
      return this.allnodes.length   
@@ -35,6 +36,7 @@ var HashBounds = class HashBounds {
         return this.getNodes(bounds)
     }
     getNodes(bounds) {
+           if (!bounds) return this.allnodes;
         var p1 = {x:bounds.x,y:bounds.y}
         var p2 = {x:bounds.x + bounds.width,y: bounds.y + bounds.height}
         var a = this.getKey(p1)
@@ -75,12 +77,12 @@ var HashBounds = class HashBounds {
             for (var j = a.x; j < b.x + 1; j++) {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
-                if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = undefined
+                if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = false
                     }
             }
             
         }
-        delete this.data[node.hash.id]
+        this.data[node.hash.id] = false
         node.hash = false;
         return true;
     }
@@ -100,7 +102,7 @@ var HashBounds = class HashBounds {
                 if (!(i > c.y && i < d.y && j > c.x && j < d.x)) {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
-                if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = undefined
+                if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = false
                     }
                     }
             }
