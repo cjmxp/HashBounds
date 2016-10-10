@@ -22,7 +22,6 @@ var HashBounds = class HashBounds {
         this.map = {};
         this.key = 0;
         this.pn = pn;
-        this.allnodes = [];
         this.data = {}
         
     }
@@ -36,7 +35,7 @@ var HashBounds = class HashBounds {
         return this.getNodes(bounds)
     }
     getNodes(bounds) {
-           if (!bounds) return this.allnodes;
+           if (!bounds) throw "Bounds not specified"
         var p1 = {x:bounds.x,y:bounds.y}
         var p2 = {x:bounds.x + bounds.width,y: bounds.y + bounds.height}
         var a = this.getKey(p1)
@@ -66,8 +65,6 @@ var HashBounds = class HashBounds {
         return {x:Math.max(Math.floor(xy.x/this.size),0),y:Math.max(Math.floor(xy.y/this.size),0)}
     }
     delete(node) {
-        var ind = this.allnodes.indexOf(node)
-        if (ind != -1) this.allnodes.splice(node)
         if (!node.hash) return false;
          var a = node.hash.a
          var b = node.hash.b
@@ -122,7 +119,7 @@ var HashBounds = class HashBounds {
       height: node.size * 2
   }
         }
-        if (this.allnodes.indexOf(node) == -1) this.allnodes.push(node)
+       
         var p1 = {x:node.bounds.x,y:node.bounds.y}
         var p2 = {x:node.bounds.x + node.bounds.width,y: node.bounds.y + node.bounds.height}
         var a = this.getKey(p1)
