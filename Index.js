@@ -49,11 +49,12 @@ var HashBounds = class HashBounds {
                 if (this.map[ke]) {
                  // n += ke + "|" + this.map[ke].length + ","
                        
-                this.map[ke].forEach((node)=>{
+                for (var k in this.map[ke]) {
+                       var node = this.map[ke][k]
                        if (table[node.key]) return
                     result.push(this.data[node.key])
                    table[node.key] = true; 
-                })
+                }
                 }
             }
             
