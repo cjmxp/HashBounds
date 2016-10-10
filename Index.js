@@ -51,7 +51,7 @@ var HashBounds = class HashBounds {
                        
                 for (var k in this.map[ke]) {
                        var node = this.map[ke][k]
-                       if (table[node.key]) return
+                       if (!node || table[node.key]) continue;
                     result.push(this.data[node.key])
                    table[node.key] = true; 
                 }
