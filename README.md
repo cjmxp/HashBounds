@@ -7,6 +7,7 @@ A super efficient collision check reducer using pos hashes that can handle bound
 # Usage
 > npm install hashbounds
 
+##### Hashbounds(cellsize,useBounds?,useCenter?)
 
 ```
 var HashBounds = require('hashbounds')
@@ -34,7 +35,7 @@ console.log(nodes.length)
 hashBounds.delete(node)// delete node
 ```
 
-#### Hashbounds(cellsize,useBounds?,useCenter?)
+
 
 
 ## How does it work?
