@@ -18,7 +18,7 @@
 */
 
 /*
-I wonder if it is possible to create a grid that adapts (heirachial hash grid) but without knowing the bounds
+I wonder if it is possible to create a grid that adapts (heirachial hash grid) but without knowing the bounds and requireing only one level
 
 |______________________|
 | .  |.          |     |
