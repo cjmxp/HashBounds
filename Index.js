@@ -20,14 +20,14 @@
 /*
 I wonder if it is possible to create a grid that adapts (heirachial hash grid) but without knowing the bounds
 
-|_________________
-| .  |.          |
-|____|      .    |    
-|  . |    .      |
-|____|___________|_____
-| .  | .   |   . | .  |
-|    |     |     |    |
-|__________________________
+|______________________|
+| .  |.          |     |
+|____|      .    |_____|
+|  . |    .      |     |
+|____|___________|_____|
+| .  | .   |   . | .   |
+|    |     |     |     |
+|----|-----|-----|-----|
 */
 var HashBounds = class HashBounds {
     constructor(startsize,pn) {
