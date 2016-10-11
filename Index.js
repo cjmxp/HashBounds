@@ -30,7 +30,8 @@ I wonder if it is possible to create a grid that adapts (heirachial hash grid) b
 |----|-----|-----|-----|
 */
 var HashBounds = class HashBounds {
-    constructor(startsize,pn) {
+    constructor(startsize,don,pn) {
+           this.don = don;
         this.startsize = startsize;
         this.map = {};
         this.key = 0;
@@ -83,7 +84,12 @@ var HashBounds = class HashBounds {
          var a = node.hash.a
          var b = node.hash.b
         if (!a || !b) return false;
-        
+        if (this.don) {
+           var f = this.map[a.x + ":" + a.y]
+           if (f) {
+f[node.hash.key] = false;
+           }
+        } else {
           for (var i = a.y; i < b.y + 1; i++) {
             for (var j = a.x; j < b.x + 1; j++) {
                 var ke = j + ":" + i;
@@ -92,6 +98,7 @@ var HashBounds = class HashBounds {
                     }
             }
             
+        }
         }
         this.data[node.hash.id] = false
         node.hash = false;
@@ -133,13 +140,7 @@ var HashBounds = class HashBounds {
       height: node.size * 2
   }
         }
-       
-        var p1 = {x:node.bounds.x,y:node.bounds.y}
-        var p2 = {x:node.bounds.x + node.bounds.width,y: node.bounds.y + node.bounds.height}
-        var a = this.getKey(p1)
-        var b = this.getKey(p2)
-    
-        var key = (node.hash && node.hash.key) ? node.hash.key : this.getNxt()
+           var key = (node.hash && node.hash.key) ? node.hash.key : this.getNxt()
         node.hash = {
          
             a: a,
@@ -148,7 +149,17 @@ var HashBounds = class HashBounds {
             id: ""
         }
         this.data[key] = node
-        
+       if (this.don) {
+           var p1 = {x:node.bounds.x + node.bounds.width/2,y:node.bounds.y + node.bounds.height/2}
+           var a = this.getKey(p1)
+           var ke = a.x + ":" + a.y
+           if (!this.map[ke]) this.map[ke] = {};
+              this.map[ke][node.hash.key] = node.hash;
+       } else {
+        var p1 = {x:node.bounds.x,y:node.bounds.y}
+        var p2 = {x:node.bounds.x + node.bounds.width,y: node.bounds.y + node.bounds.height}
+        var a = this.getKey(p1)
+        var b = this.getKey(p2)
         for (var i = a.y; i < b.y + 1; i++) {
             for (var j = a.x; j < b.x + 1; j++) {
                 var ke = j + ":" + i;
@@ -158,6 +169,10 @@ var HashBounds = class HashBounds {
             }
             
         }
+        
+              
+       }
     }
+           
 }
 module.exports = HashBounds
