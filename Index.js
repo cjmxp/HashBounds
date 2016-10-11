@@ -108,6 +108,10 @@ f[node[this.va].key] = false;
     update(node) {
         if (!node[this.va]) return false;
          var a = node[this.va].a
+         if (this.don) {
+             var ke = a.x + ":" + a.y
+             if (this.map[ke] && this.map[ke][node[this.va].key]) this.map[ke][node[this.va].key] = false;
+         } else {
          var b = node[this.va].b
           var p1 = {x:node.bounds.x,y:node.bounds.y}
         var p2 = {x:node.bounds.x + node.bounds.width,y: node.bounds.y + node.bounds.height}
@@ -127,7 +131,7 @@ f[node[this.va].key] = false;
             }
             
         }
-        
+         }
         this.insert(node)
         return true;
     }
