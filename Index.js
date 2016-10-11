@@ -16,19 +16,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-/*
-I wonder if it is possible to create a grid that adapts (heirachial hash grid)
-
-|_________________
-| .  |.          |
-|____|      .    |    
-|  . |    .      |
-|____|___________|_____
-| .  | .   |   . | .  |
-|    |     |     |    |
-|__________________________
-*/
 var HashBounds = class HashBounds {
     constructor(size,pn) {
         this.size = size;
