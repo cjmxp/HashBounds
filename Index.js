@@ -18,7 +18,7 @@
 */
 
 /*
-I wonder if it is possible to create a grid that adapts (heirachial hash grid)
+I wonder if it is possible to create a grid that adapts (heirachial hash grid) but without knowing the bounds
 
 |_________________
 | .  |.          |
@@ -30,13 +30,12 @@ I wonder if it is possible to create a grid that adapts (heirachial hash grid)
 |__________________________
 */
 var HashBounds = class HashBounds {
-    constructor(size,pn) {
-        this.size = size;
+    constructor(startsize,pn) {
+        this.startsize = startsize;
         this.map = {};
         this.key = 0;
         this.pn = pn;
         this.data = {}
-        
     }
     getLength() {
      return this.allnodes.length   
@@ -75,8 +74,9 @@ var HashBounds = class HashBounds {
 
         return result
     }
-    getKey(xy) {
-        return {x:Math.max(Math.floor(xy.x/this.size),0),y:Math.max(Math.floor(xy.y/this.size),0)}
+    getKey(xy,size) {
+           if (!size) size = this.startsize;
+        return {x:Math.max(Math.floor(xy.x/size),0),y:Math.max(Math.floor(xy.y/size),0)}
     }
     delete(node) {
         if (!node.hash) return false;
