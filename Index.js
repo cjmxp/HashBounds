@@ -18,26 +18,25 @@
 */
 
 /*
-I wonder if it is possible to create a grid that adapts (heirachial hash grid) but without knowing the bounds and requireing only one level
+I wonder if it is possible to create a grid that adapts (heirachial hash grid)
 
-|______________________|
-| .  |.          |     |
-|____|      .    |_____|
-|  . |    .      |     |
-|____|___________|_____|
-| .  | .   |   . | .   |
-|    |     |     |     |
-|----|-----|-----|-----|
+|_________________
+| .  |.          |
+|____|      .    |    
+|  . |    .      |
+|____|___________|_____
+| .  | .   |   . | .  |
+|    |     |     |    |
+|__________________________
 */
 var HashBounds = class HashBounds {
-    constructor(startsize,don,pn,va) {
-           this.don = don;
-        this.startsize = startsize;
+    constructor(size,pn) {
+        this.size = size;
         this.map = {};
         this.key = 0;
         this.pn = pn;
-        this.va = (va) ? va : "hash";
         this.data = {}
+        
     }
     getLength() {
      return this.allnodes.length   
@@ -76,43 +75,32 @@ var HashBounds = class HashBounds {
 
         return result
     }
-    getKey(xy,size) {
-           if (!size) size = this.startsize;
-        return {x:Math.max(Math.floor(xy.x/size),0),y:Math.max(Math.floor(xy.y/size),0)}
+    getKey(xy) {
+        return {x:Math.max(Math.floor(xy.x/this.size),0),y:Math.max(Math.floor(xy.y/this.size),0)}
     }
     delete(node) {
-        if (!node[this.va]) return false;
-         var a = node[this.va].a
-         var b = node[this.va].b
+        if (!node.hash) return false;
+         var a = node.hash.a
+         var b = node.hash.b
         if (!a || !b) return false;
-        if (this.don) {
-           var f = this.map[a.x + ":" + a.y]
-           if (f) {
-f[node[this.va].key] = false;
-           }
-        } else {
+        
           for (var i = a.y; i < b.y + 1; i++) {
             for (var j = a.x; j < b.x + 1; j++) {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
-                if (this.map[ke][node[this.va].key]) this.map[ke][node[this.va].key] = false
+                if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = false
                     }
             }
             
         }
-        }
-        this.data[node[this.va].id] = false
-        node[this.va] = false;
+        this.data[node.hash.id] = false
+        node.hash = false;
         return true;
     }
     update(node) {
-        if (!node[this.va]) return false;
-         var a = node[this.va].a
-         if (this.don) {
-             var ke = a.x + ":" + a.y
-             if (this.map[ke] && this.map[ke][node[this.va].key]) this.map[ke][node[this.va].key] = false;
-         } else {
-         var b = node[this.va].b
+        if (!node.hash) return false;
+         var a = node.hash.a
+         var b = node.hash.b
           var p1 = {x:node.bounds.x,y:node.bounds.y}
         var p2 = {x:node.bounds.x + node.bounds.width,y: node.bounds.y + node.bounds.height}
         
@@ -125,13 +113,13 @@ f[node[this.va].key] = false;
                 if (!(i > c.y && i < d.y && j > c.x && j < d.x)) {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
-                if (this.map[ke][node[this.va].key]) this.map[ke][node[this.va].key] = false
+                if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = false
                     }
                     }
             }
             
         }
-         }
+        
         this.insert(node)
         return true;
     }
@@ -145,8 +133,14 @@ f[node[this.va].key] = false;
       height: node.size * 2
   }
         }
-           var key = (node[this.va] && node[this.va].key) ? node[this.va].key : this.getNxt()
-        node[this.va] = {
+       
+        var p1 = {x:node.bounds.x,y:node.bounds.y}
+        var p2 = {x:node.bounds.x + node.bounds.width,y: node.bounds.y + node.bounds.height}
+        var a = this.getKey(p1)
+        var b = this.getKey(p2)
+    
+        var key = (node.hash && node.hash.key) ? node.hash.key : this.getNxt()
+        node.hash = {
          
             a: a,
             b: b,
@@ -154,30 +148,16 @@ f[node[this.va].key] = false;
             id: ""
         }
         this.data[key] = node
-       if (this.don) {
-           var p1 = {x:node.bounds.x + node.bounds.width/2,y:node.bounds.y + node.bounds.height/2}
-           var a = this.getKey(p1)
-           var ke = a.x + ":" + a.y
-           if (!this.map[ke]) this.map[ke] = {};
-              this.map[ke][node[this.va].key] = node[this.va];
-       } else {
-        var p1 = {x:node.bounds.x,y:node.bounds.y}
-        var p2 = {x:node.bounds.x + node.bounds.width,y: node.bounds.y + node.bounds.height}
-        var a = this.getKey(p1)
-        var b = this.getKey(p2)
+        
         for (var i = a.y; i < b.y + 1; i++) {
             for (var j = a.x; j < b.x + 1; j++) {
                 var ke = j + ":" + i;
       
                 if (!this.map[ke]) this.map[ke] = {};
-                this.map[ke][node[this.va].key] = node[this.va]
+                this.map[ke][node.hash.key] = node.hash
             }
             
         }
-        
-              
-       }
     }
-           
 }
 module.exports = HashBounds
