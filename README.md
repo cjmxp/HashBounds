@@ -34,6 +34,8 @@ console.log(nodes.length)
 hashBounds.delete(node)// delete node
 ```
 
+#### Hashbounds(cellsize,useBounds?,useCenter?)
+
 
 ## How does it work?
 This modules works by putting the objects into a grid using their "hashes". First, the bounds top left corner and bottom right corners are determined
