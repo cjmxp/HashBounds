@@ -30,12 +30,13 @@ I wonder if it is possible to create a grid that adapts (heirachial hash grid) b
 |----|-----|-----|-----|
 */
 var HashBounds = class HashBounds {
-    constructor(startsize,don,pn) {
+    constructor(startsize,don,pn,va) {
            this.don = don;
         this.startsize = startsize;
         this.map = {};
         this.key = 0;
         this.pn = pn;
+        this.va = (va) ? va : "hash";
         this.data = {}
     }
     getLength() {
@@ -80,34 +81,34 @@ var HashBounds = class HashBounds {
         return {x:Math.max(Math.floor(xy.x/size),0),y:Math.max(Math.floor(xy.y/size),0)}
     }
     delete(node) {
-        if (!node.hash) return false;
-         var a = node.hash.a
-         var b = node.hash.b
+        if (!node[this.va]) return false;
+         var a = node[this.va].a
+         var b = node[this.va].b
         if (!a || !b) return false;
         if (this.don) {
            var f = this.map[a.x + ":" + a.y]
            if (f) {
-f[node.hash.key] = false;
+f[node[this.va].key] = false;
            }
         } else {
           for (var i = a.y; i < b.y + 1; i++) {
             for (var j = a.x; j < b.x + 1; j++) {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
-                if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = false
+                if (this.map[ke][node[this.va].key]) this.map[ke][node[this.va].key] = false
                     }
             }
             
         }
         }
-        this.data[node.hash.id] = false
-        node.hash = false;
+        this.data[node[this.va].id] = false
+        node[this.va] = false;
         return true;
     }
     update(node) {
-        if (!node.hash) return false;
-         var a = node.hash.a
-         var b = node.hash.b
+        if (!node[this.va]) return false;
+         var a = node[this.va].a
+         var b = node[this.va].b
           var p1 = {x:node.bounds.x,y:node.bounds.y}
         var p2 = {x:node.bounds.x + node.bounds.width,y: node.bounds.y + node.bounds.height}
         
@@ -120,7 +121,7 @@ f[node.hash.key] = false;
                 if (!(i > c.y && i < d.y && j > c.x && j < d.x)) {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
-                if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = false
+                if (this.map[ke][node[this.va].key]) this.map[ke][node[this.va].key] = false
                     }
                     }
             }
@@ -140,8 +141,8 @@ f[node.hash.key] = false;
       height: node.size * 2
   }
         }
-           var key = (node.hash && node.hash.key) ? node.hash.key : this.getNxt()
-        node.hash = {
+           var key = (node[this.va] && node[this.va].key) ? node[this.va].key : this.getNxt()
+        node[this.va] = {
          
             a: a,
             b: b,
@@ -154,7 +155,7 @@ f[node.hash.key] = false;
            var a = this.getKey(p1)
            var ke = a.x + ":" + a.y
            if (!this.map[ke]) this.map[ke] = {};
-              this.map[ke][node.hash.key] = node.hash;
+              this.map[ke][node[this.va].key] = node[this.va];
        } else {
         var p1 = {x:node.bounds.x,y:node.bounds.y}
         var p2 = {x:node.bounds.x + node.bounds.width,y: node.bounds.y + node.bounds.height}
@@ -165,7 +166,7 @@ f[node.hash.key] = false;
                 var ke = j + ":" + i;
       
                 if (!this.map[ke]) this.map[ke] = {};
-                this.map[ke][node.hash.key] = node.hash
+                this.map[ke][node[this.va].key] = node[this.va]
             }
             
         }
