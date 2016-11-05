@@ -25,6 +25,9 @@ var HashBounds = class HashBounds {
         this.data = {}
         
     }
+       getNearest(bounds) {
+              
+       }
     getLength() {
      return this.allnodes.length   
     }
@@ -84,6 +87,8 @@ var HashBounds = class HashBounds {
         node.hash = false;
         return true;
     }
+       
+       
     update(node) {
         if (!node.hash) return false;
          var a = node.hash.a
