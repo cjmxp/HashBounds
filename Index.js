@@ -16,6 +16,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 var HashBounds = class HashBounds {
     constructor(size,pn) {
         this.size = size;
@@ -49,13 +50,17 @@ var HashBounds = class HashBounds {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
                  // n += ke + "|" + this.map[ke].length + ","
-                       
+                       var ne = {};
                 for (var k in this.map[ke]) {
                        var node = this.map[ke][k]
-                       if (!node || table[node.key]) continue;
+                       if (!node) continue;
+                       ne[node.key] = node
+                       if (table[node.key]) continue;
+                       
                     result.push(this.data[node.key])
                    table[node.key] = true; 
                 }
+                       this.map[ke] = ne
                 }
             }
             
@@ -100,12 +105,12 @@ var HashBounds = class HashBounds {
         
           for (var i = a.y; i < b.y + 1; i++) {
             for (var j = a.x; j < b.x + 1; j++) {
-                if (!(i > c.y && i < d.y && j > c.x && j < d.x)) {
+             
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
                 if (this.map[ke][node.hash.key]) this.map[ke][node.hash.key] = false
                     }
-                    }
+                    
             }
             
         }
