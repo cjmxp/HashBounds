@@ -102,7 +102,7 @@ var HashBounds = class HashBounds {
         var c = this.getKey(p1)
         var d = this.getKey(p2)
         
-        
+        if (c == a  && d == b) return
           for (var i = a.y; i < b.y + 1; i++) {
             for (var j = a.x; j < b.x + 1; j++) {
              
