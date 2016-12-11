@@ -27,16 +27,12 @@ var HashBounds = class HashBounds {
         
     }
 
-    getLength() {
-     return this.allnodes.length   
-    }
+   
     getNxt() {
         return this.key ++;
     }
-    getWithMerged(bounds) {
-        return this.getNodes(bounds)
-    }
-    getNodes(bounds) {
+    
+    toArray(bounds) {
            if (!bounds) throw "Bounds not specified"
         var p1 = {x:bounds.x,y:bounds.y}
         var p2 = {x:bounds.x + bounds.width,y: bounds.y + bounds.height}
@@ -50,17 +46,15 @@ var HashBounds = class HashBounds {
                 var ke = j + ":" + i;
                 if (this.map[ke]) {
                  // n += ke + "|" + this.map[ke].length + ","
-                       var ne = {};
-                for (var k in this.map[ke]) {
-                       var node = this.map[ke][k]
-                       if (!node) continue;
-                       ne[node.key] = node
-                       if (table[node.key]) continue;
+                     
+               this.map[ke].forEach((node)=>{
+                     
+                       if (table[node.key]) return;
                        
                     result.push(this.data[node.key])
                    table[node.key] = true; 
-                }
-                       this.map[ke] = ne
+                })
+                       
                 }
             }
             
@@ -68,6 +62,66 @@ var HashBounds = class HashBounds {
 
         return result
     }
+     forEach(bounds,call) {
+                  if (!bounds) throw "Bounds not specified"
+        var p1 = {x:bounds.x,y:bounds.y}
+        var p2 = {x:bounds.x + bounds.width,y: bounds.y + bounds.height}
+        var a = this.getKey(p1)
+        var b = this.getKey(p2)
+       
+        var table = {}; // hashtable
+        
+         for (var i = a.y; i < b.y + 1; i++) {
+            for (var j = a.x; j < b.x + 1; j++) {
+                var ke = j + ":" + i;
+                if (this.map[ke]) {
+                 // n += ke + "|" + this.map[ke].length + ","
+                     
+               this.map[ke].forEach((node)=>{
+                     
+                       if (table[node.key]) return;
+                       
+                    call(this.data[node.key],node.key)
+                   table[node.key] = true; 
+                })
+                       
+                }
+            }
+            
+        }
+     }
+       every(bounds,call) {
+               if (!bounds) throw "Bounds not specified"
+        var p1 = {x:bounds.x,y:bounds.y}
+        var p2 = {x:bounds.x + bounds.width,y: bounds.y + bounds.height}
+        var a = this.getKey(p1)
+        var b = this.getKey(p2)
+       
+        var table = {}; // hashtable
+       
+         for (var i = a.y; i < b.y + 1; i++) {
+            for (var j = a.x; j < b.x + 1; j++) {
+                var ke = j + ":" + i;
+                if (this.map[ke]) {
+                 // n += ke + "|" + this.map[ke].length + ","
+                     
+               if (!this.map[ke].every((node)=>{
+                     
+                       if (table[node.key]) return true;
+                       
+                    return call(this.data[node.key],node.key)
+                   table[node.key] = true; 
+                })) break;
+                       
+                }
+            }
+            
+        }    
+       }
+       find(x,y) {
+              
+              
+       }
     getKey(xy) {
         return {x:~~(xy.x/this.size),y:~~(xy.y/this.size)}
     }
