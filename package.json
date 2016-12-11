@@ -2,7 +2,7 @@
   "name": "hashbounds",
   "version": "1.6.5",
   "description": "A bound-based spatial hashing system",
-  "main": "Index.js",
+  "main": "index.js",
   "scripts": {
     "test": "node index.js"
   },
