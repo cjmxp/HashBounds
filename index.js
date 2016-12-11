@@ -119,7 +119,7 @@ var HashBounds = class HashBounds {
         }    
        }
        find(x,y) {
-              
+               if (!x || !y) throw "Position not specified"
               
        }
     getKey(xy) {
