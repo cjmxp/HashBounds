@@ -21,7 +21,7 @@ var HashBounds = class HashBounds {
     constructor(size, pn) {
         this.size = size;
         this.map = {};
-           this.length = 0;
+        this.length = 0;
         this.key = 0;
         this.pn = pn;
         this.data = {}
@@ -137,72 +137,7 @@ var HashBounds = class HashBounds {
 
         }
     }
-    traverse(node, test) {
-     
 
-
-
-        if (!node || !node.hash) throw "Node not specified"
-           if (this.length <= 0) return;
-        var p = {
-      x: node.hash.bounds.x + (node.hash.width/2),
-               y: node.hash.bounds.y + (node.hash.height/2)
-        }
-        var a = this.getKey(p)
-        var g = 1
-        var k = 0;
-        var hash = {};
-           hash[node.hash.key] = true;
-        var act = 0;
-
-        function getNext() {
-            k++;
-            switch (act) {
-            case 0: // right
-                a.x++;
-                break;
-            case 1: // up
-                a.y++;
-                if (k >= g) {
-                    act++;
-                    k = 0;
-                    g++;
-                }
-                return;
-
-                break;
-            case 2: // left
-                a.x--;
-                break;
-            case 3: // down
-                a.y--;
-                if (k >= g) {
-                    act = 0;
-                    k = 0;
-                    g++;
-                }
-                break;
-            }
-            if (k >= g) {
-                act++;
-                k = 0;
-            }
-
-        }
-        while (0 == 0) {
-            var ke = p.x + ":" + p.y;
-            var b = this.map[ke]
-            if (b) {
-                if (!b.every((node) => {
-                        if (hash[node.key]) return true;
-                        hash[node.key] = true;
-                        return !test(this.data[node.key])
-                    })) return node;
-
-            }
-            getNext()
-        }
-    }
     getKey(xy) {
         return {
             x: ~~(xy.x / this.size),
@@ -211,7 +146,7 @@ var HashBounds = class HashBounds {
     }
     delete(node) {
         if (!node.hash) return false;
-           this.length --;
+        this.length--;
         var a = node.hash.a
         var b = node.hash.b
         if (!a || !b) return false;
@@ -260,12 +195,12 @@ var HashBounds = class HashBounds {
 
         }
 
-        this.insert(node,true)
+        this.insert(node, true)
         return true;
     }
 
-    insert(node,a) {
-           if (!a) this.length ++;
+    insert(node, a) {
+        if (!a) this.length++;
         if (this.pn) {
             node.bounds = {
                 x: node.position.x - node.size,
@@ -283,7 +218,7 @@ var HashBounds = class HashBounds {
             x: node.bounds.x + node.bounds.width,
             y: node.bounds.y + node.bounds.height
         }
-     
+
         var a = this.getKey(p1)
         var b = this.getKey(p2)
 
@@ -293,10 +228,10 @@ var HashBounds = class HashBounds {
             a: a,
             b: b,
             key: key,
-               bounds: node.bounds
+            bounds: node.bounds
 
         }
-          
+
         this.data[key] = node
 
         for (var i = a.y; i < b.y + 1; i++) {
