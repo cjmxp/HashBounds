@@ -137,19 +137,17 @@ var HashBounds = class HashBounds {
 
         }
     }
-    find(pos, test) {
-        /*
-         spiral traversal
+    find(node, test) {
+     
 
 
 
-
-        */
-
-
-
-        if (!pos.x || !pos.y) throw "Position not specified"
-        var p = pos
+        if (!node || !node.hash) throw "Node not specified"
+           if (this.length <= 0) return;
+        var p = {
+      x: node.hash.bounds.x + (node.hash.width/2),
+               y: node.hash.bounds.y + (node.hash.height/2)
+        }
         var a = this.getKey(p)
         var g = 1
         var k = 0;
@@ -284,6 +282,7 @@ var HashBounds = class HashBounds {
             x: node.bounds.x + node.bounds.width,
             y: node.bounds.y + node.bounds.height
         }
+     
         var a = this.getKey(p1)
         var b = this.getKey(p2)
 
@@ -292,9 +291,11 @@ var HashBounds = class HashBounds {
 
             a: a,
             b: b,
-            key: key
+            key: key,
+               bounds: node.bounds
 
         }
+          
         this.data[key] = node
 
         for (var i = a.y; i < b.y + 1; i++) {
