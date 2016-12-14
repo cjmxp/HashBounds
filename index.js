@@ -36,6 +36,9 @@ module.exports = class HashBounds {
             this.LEVELS.push(new Grid(a), i + 1)
         }
     }
+       clear() {
+        this.createLevels();      
+       }
        update(node) {
         this.delete(node)
               this.insert(node)
@@ -67,8 +70,9 @@ module.exports = class HashBounds {
     }
     every(bounds, call) {
         for (var i = 0; i < this.LEVELS.length; i++) {
-            if (!this.LEVELS[i].every(bounds, call)) break;
+            if (!this.LEVELS[i].every(bounds, call)) return false;
         }
+           return true;
     }
     forEach(bounds, call) {
         for (var i = 0; i < this.LEVELS.length; i++) {
