@@ -21,6 +21,7 @@ var HashBounds = class HashBounds {
     constructor(size, pn) {
         this.size = size;
         this.map = {};
+           this.length = 0;
         this.key = 0;
         this.pn = pn;
         this.data = {}
@@ -211,6 +212,7 @@ var HashBounds = class HashBounds {
     }
     delete(node) {
         if (!node.hash) return false;
+           this.length --;
         var a = node.hash.a
         var b = node.hash.b
         if (!a || !b) return false;
@@ -259,11 +261,12 @@ var HashBounds = class HashBounds {
 
         }
 
-        this.insert(node)
+        this.insert(node,true)
         return true;
     }
 
-    insert(node) {
+    insert(node,a) {
+           if (!a) this.length ++;
         if (this.pn) {
             node.bounds = {
                 x: node.position.x - node.size,
