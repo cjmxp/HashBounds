@@ -36,6 +36,10 @@ module.exports = class HashBounds {
             this.LEVELS.push(new Grid(a), i + 1)
         }
     }
+       update(node) {
+        this.delete(node)
+              this.insert(node)
+       }
     insert(node) {
         if (node.hash) throw "ERR: A node cannot be already in a hash!"
         var bounds = node.bounds;
