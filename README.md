@@ -11,7 +11,7 @@ A super efficient collision check reducer using pos hashes that can handle bound
 
 ```
 var HashBounds = require('hashbounds')
-var hashBounds = new HashBounds(10) // size of each `cell`
+var hashBounds = new HashBounds(10) // size of parent cells
 var node = {
 bounds: {
 x: 10,
@@ -51,4 +51,15 @@ This modules works by putting the objects into a grid using their "hashes". Firs
 ```
 
 Then, it puts the node into the cells that touch the box. It is rather complicated.
+
+
+## Methods:
+
+1. insert(node): Insert a node into the map
+2. delete(node): Remove a node from the map
+3. update(node): Update the node in the map
+4. clear(): Clear all nodes in the map
+5. toArray(bounds): Get an array of objects in certain bounds
+6. forEach(bounds,call): Loop through objects in certain bounds
+7. every(bounds,call): Same a .forEach(bounds), but stops execution when returning false
 
