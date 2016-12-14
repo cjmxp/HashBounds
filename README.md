@@ -30,7 +30,7 @@ y: 0,
 width: 10,
 height: 10
 }
-var nodes = hashBounds.getNodes(bounds) // gets nodes that is in/near the bounds
+var nodes = hashBounds.toArray(bounds) // gets nodes that is in/near the bounds
 console.log(nodes.length)
 hashBounds.delete(node)// delete node
 ```
