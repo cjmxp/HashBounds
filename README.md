@@ -11,7 +11,7 @@ A super efficient collision check reducer using pos hashes that can handle bound
 
 ```
 var HashBounds = require('hashbounds')
-var hashBounds = new HashBounds(10) // size of parent cells
+var hashBounds = new HashBounds(10,2) // size of parent cells, amount of levels
 var node = {
 bounds: {
 x: 10,
