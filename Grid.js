@@ -18,15 +18,15 @@
 */
 module.exports = class Grid {
     constructor(g, p) {
-        this.SIZE = g;
+        this.POWER = g;
         this.LEVEL = p;
         this.DATA = {};
         this.LENGTH = 0;
     }
     getKey(x, y) {
         return {
-            x: Math.floor(x / this.SIZE) * this.SIZE,
-            y: Math.floor(y / this.SIZE) * this.SIZE
+            x: Math.floor(x >> this.POWER),
+            y: Math.floor(y >> this.POWER)
         }
     }
     insert(node) {
