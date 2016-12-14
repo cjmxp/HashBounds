@@ -137,7 +137,7 @@ var HashBounds = class HashBounds {
 
         }
     }
-    find(node, test) {
+    traverse(node, test) {
      
 
 
@@ -152,6 +152,7 @@ var HashBounds = class HashBounds {
         var g = 1
         var k = 0;
         var hash = {};
+           hash[node.hash.key] = true;
         var act = 0;
 
         function getNext() {
