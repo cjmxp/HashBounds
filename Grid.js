@@ -23,41 +23,41 @@ module.exports = class Grid {
         this.DATA = {};
         this.LENGTH = 0;
     }
-       _every(c) {
-    var a = this.entries()
-    var b;
-    while (b = a.next().value) {
-        if (!c(b[1], b[0])) return true;
+    _every(m, c) {
+        var a = m.entries()
+        var b;
+        while (b = a.next().value) {
+            if (!c(b[1], b[0])) return true;
+        }
+        return false;
     }
-  return false;
-}
-_toArray() {
-    var array = [];
-    this.forEach(function (a) {
-        array.push(a)
-    })
-    return array
-}
-_map(c) {
-  var f = new Map();
- var a = this.entries()
-    var b;
-    while (b = a.next().value) {
-        f.set(b[0],c(b[1], b[0])) 
+    _toArray(m) {
+        var array = [];
+        m.forEach(function (a) {
+            array.push(a)
+        })
+        return array
     }
-  return f;
-  
-}
-_filter(c) {
-  var f = new Map();
- var a = this.entries()
-    var b;
-    while (b = a.next().value) {
-        if (c(b[1], b[0])) f.set(b[0],b[1])
+    _map(m, c) {
+        var f = new Map();
+        var a = m.entries()
+        var b;
+        while (b = a.next().value) {
+            f.set(b[0], c(b[1], b[0]))
+        }
+        return f;
+
     }
-  return f;
-  
-}
+    _filter(m, c) {
+        var f = new Map();
+        var a = m.entries()
+        var b;
+        while (b = a.next().value) {
+            if (c(b[1], b[0])) f.set(b[0], b[1])
+        }
+        return f;
+
+    }
     getKey(x, y) {
         return {
             x: Math.floor(x >> this.POWER),
@@ -136,7 +136,7 @@ _filter(c) {
                 var ke = j + ":" + i;
 
                 if (this.DATA[ke])
-                    if (!this.DATA[ke].every(call)) return false;
+                    if (!this.every(this.DATA[ke], call)) return false;
             }
 
         }
