@@ -23,6 +23,41 @@ module.exports = class Grid {
         this.DATA = {};
         this.LENGTH = 0;
     }
+       _every(c) {
+    var a = this.entries()
+    var b;
+    while (b = a.next().value) {
+        if (!c(b[1], b[0])) return true;
+    }
+  return false;
+}
+_toArray() {
+    var array = [];
+    this.forEach(function (a) {
+        array.push(a)
+    })
+    return array
+}
+_map(c) {
+  var f = new Map();
+ var a = this.entries()
+    var b;
+    while (b = a.next().value) {
+        f.set(b[0],c(b[1], b[0])) 
+    }
+  return f;
+  
+}
+_filter(c) {
+  var f = new Map();
+ var a = this.entries()
+    var b;
+    while (b = a.next().value) {
+        if (c(b[1], b[0])) f.set(b[0],b[1])
+    }
+  return f;
+  
+}
     getKey(x, y) {
         return {
             x: Math.floor(x >> this.POWER),
