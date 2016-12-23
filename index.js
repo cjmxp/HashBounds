@@ -18,6 +18,7 @@
 */
 
 var Grid = require('./Grid.js')
+/*
 Map.prototype.every = function (c) {
     var a = this.entries()
     var b;
@@ -53,7 +54,7 @@ Map.prototype.filter = function(c) {
   return f;
   
 }
-
+*/
 module.exports = class HashBounds {
     constructor(power, lvl) {
         this.INITIAL = power;
