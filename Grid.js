@@ -136,7 +136,7 @@ module.exports = class Grid {
                 var ke = j + ":" + i;
 
                 if (this.DATA[ke])
-                    if (!this.every(this.DATA[ke], call)) return false;
+                    if (!this._every(this.DATA[ke], call)) return false;
             }
 
         }
