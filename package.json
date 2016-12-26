@@ -1,25 +1,25 @@
 {
-  "name": "hashbounds",
-  "version": "1.7.5",
-  "description": "A bound-based spatial hashing system",
-  "main": "index.js",
-  "scripts": {
-    "test": "node index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AJS-development/HashBounds.git"
-  },
-  "keywords": [
+    "name": "hashbounds",
+    "version": "1.7.8",
+    "description": "A bound-based spatial hashing system",
+    "main": "index.js",
+    "scripts": {
+        "test": "node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AJS-development/HashBounds.git"
+    },
+    "keywords": [
     "collisions",
     "trees",
     "hash",
     "bounds"
   ],
-  "author": "Andrews54757",
-  "license": "AGPL-3.0",
-  "bugs": {
-    "url": "https://github.com/AJS-development/HashBounds/issues"
-  },
-  "homepage": "https://github.com/AJS-development/HashBounds#readme"
+    "author": "Andrews54757",
+    "license": "AGPL-3.0",
+    "bugs": {
+        "url": "https://github.com/AJS-development/HashBounds/issues"
+    },
+    "homepage": "https://github.com/AJS-development/HashBounds#readme"
 }

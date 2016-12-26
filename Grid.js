@@ -31,33 +31,7 @@ module.exports = class Grid {
         }
         return false;
     }
-    _toArray(m) {
-        var array = [];
-        m.forEach(function (a) {
-            array.push(a)
-        })
-        return array
-    }
-    _map(m, c) {
-        var f = new Map();
-        var a = m.entries()
-        var b;
-        while (b = a.next().value) {
-            f.set(b[0], c(b[1], b[0]))
-        }
-        return f;
 
-    }
-    _filter(m, c) {
-        var f = new Map();
-        var a = m.entries()
-        var b;
-        while (b = a.next().value) {
-            if (c(b[1], b[0])) f.set(b[0], b[1])
-        }
-        return f;
-
-    }
     getKey(x, y) {
         return {
             x: Math.floor(x >> this.POWER),
@@ -107,7 +81,8 @@ module.exports = class Grid {
         var x1 = bounds.x,
             y1 = bounds.y,
             x2 = bounds.x + bounds.width,
-            y2 = bounds.y + bounds.height;
+            y2 = bounds.y + bounds.height,
+            h = {};
 
         var k1 = this.getKey(x1, y1)
         var k2 = this.getKey(x2, y2)
@@ -115,7 +90,10 @@ module.exports = class Grid {
             for (var j = k1.x; j < k2.x + 1; j++) {
                 var ke = j + ":" + i;
 
-                if (this.DATA[ke]) this.DATA[ke].forEach((node) => {
+                if (this.DATA[ke]) this.DATA[ke].forEach((node, i) => {
+
+                    if (h[i]) return;
+                    h[i] = true;
                     array.push(node)
                 })
             }
@@ -127,7 +105,8 @@ module.exports = class Grid {
         var x1 = bounds.x,
             y1 = bounds.y,
             x2 = bounds.x + bounds.width,
-            y2 = bounds.y + bounds.height;
+            y2 = bounds.y + bounds.height,
+            h = {};
 
         var k1 = this.getKey(x1, y1)
         var k2 = this.getKey(x2, y2)
@@ -136,7 +115,12 @@ module.exports = class Grid {
                 var ke = j + ":" + i;
 
                 if (this.DATA[ke])
-                    if (!this._every(this.DATA[ke], call)) return false;
+                    if (!this._every(this.DATA[ke], (a, b) => {
+
+                            if (h[b]) return true;
+                            h[b] = true;
+                            return call(a, b);
+                        })) return false;
             }
 
         }
@@ -147,7 +131,8 @@ module.exports = class Grid {
         var x1 = bounds.x,
             y1 = bounds.y,
             x2 = bounds.x + bounds.width,
-            y2 = bounds.y + bounds.height;
+            y2 = bounds.y + bounds.height,
+            h = {};
 
         var k1 = this.getKey(x1, y1)
         var k2 = this.getKey(x2, y2)
@@ -156,7 +141,11 @@ module.exports = class Grid {
                 var ke = j + ":" + i;
 
                 if (this.DATA[ke])
-                    this.DATA[ke].forEach(call)
+                    this.DATA[ke].forEach((a, b) => {
+                        if (h[b]) return;
+                        h[b] = true;
+                        call(a, b)
+                    })
             }
 
         }
