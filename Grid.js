@@ -41,7 +41,7 @@ module.exports = class Grid {
     insert(node) {
 
         var a = this.getKey(node.bounds.width, node.bounds.height);
-        if (a.x + a.y >= 3 || this.LEVEL == 0) return false;
+        if (a.x + a.y >= 3 && this.LEVEL != 0) return false;
         this.LENGTH++;
         var x1 = node.bounds.x,
             y1 = node.bounds.y,
