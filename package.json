@@ -1,6 +1,6 @@
 {
     "name": "hashbounds",
-    "version": "1.7.8",
+    "version": "1.7.9",
     "description": "A bound-based spatial hashing system",
     "main": "index.js",
     "scripts": {
