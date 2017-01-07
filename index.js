@@ -83,11 +83,11 @@ module.exports = class HashBounds {
     insert(node) {
         if (node.hash) throw "ERR: A node cannot be already in a hash!"
         var bounds = node.bounds;
-        node.hash = {
-            id: this.lastid++,
-        }
+        node.hash = {}
+          if (!node._HashID) node._HashID = ++this.lastid;
+        
         var len = this.LEVELS.length
-        for (var i = 0; i < len; i++) {
+        for (var i = 0; i < len; ++i) {
             if (this.LEVELS[len - i - 1].insert(node)) break;
         }
     }
