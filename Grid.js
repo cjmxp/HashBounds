@@ -41,7 +41,7 @@ module.exports = class Grid {
     insert(node) {
 
         var a = this.getKey(node.bounds.width, node.bounds.height);
-        if (a.x + a.y >= 3 && this.LEVEL != 0) return false;
+        if (a.x + a.y >= 2 && this.LEVEL != 0) return false;
         this.LENGTH++;
         var x1 = node.bounds.x,
             y1 = node.bounds.y,
@@ -57,7 +57,7 @@ module.exports = class Grid {
             for (var j = k1.x; j < k2.x + 1; j++) {
                 var ke = j + ":" + i;
                 if (!this.DATA[ke]) this.DATA[ke] = new Map()
-                this.DATA[ke].set(node.hash.id, node)
+                this.DATA[ke].set(node._HashID, node)
             }
 
         }
@@ -71,7 +71,7 @@ module.exports = class Grid {
             for (var j = k1.x; j < k2.x + 1; j++) {
                 var ke = j + ":" + i;
 
-                this.DATA[ke].delete(node.hash.id)
+                this.DATA[ke].delete(node._HashID)
             }
 
         }
