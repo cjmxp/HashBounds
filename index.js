@@ -85,9 +85,14 @@ module.exports = class HashBounds {
         var bounds = node.bounds;
         node.hash = {}
           if (!node._HashID) node._HashID = ++this.lastid;
-        
+       if (node._HashSize == node.bounds.width + node.bounds.height) {
+                   this.LEVELS[node._HashIndex].insert(node);
+              return;
+       }
         var len = this.LEVELS.length
        var index = Math.max(len - ((node.bounds.width + node.bounds.height) >> (this.MIN - 2)),0)
+       node._HashIndex = index;
+           node._HashSize = node.bounds.width + node.bounds.height;
        this.LEVELS[index].insert(node);
         //for (var i = 0; i < len; ++i) {
          //   if (this.LEVELS[len - i - 1].insert(node)) break;
