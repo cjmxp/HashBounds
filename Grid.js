@@ -34,14 +34,14 @@ module.exports = class Grid {
 
     getKey(x, y) {
         return {
-            x: Math.floor(x >> this.POWER),
-            y: Math.floor(y >> this.POWER)
+            x: x >> this.POWER,
+            y: y >> this.POWER
         }
     }
     insert(node) {
 
-     //   var a = this.getKey(node.bounds.width, node.bounds.height);
-       // if (a.x + a.y >= 2 && this.LEVEL != 0) return false;
+        //   var a = this.getKey(node.bounds.width, node.bounds.height);
+        // if (a.x + a.y >= 2 && this.LEVEL != 0) return false;
         this.LENGTH++;
         var x1 = node.bounds.x,
             y1 = node.bounds.y,
