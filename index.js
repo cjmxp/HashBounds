@@ -59,6 +59,7 @@ module.exports = class HashBounds {
     constructor(power, lvl) {
         this.INITIAL = power;
         this.LVL = lvl;
+        this.MIN = power - lvl;
         this.LEVELS = []
         this.lastid = 0;
         this.createLevels()
@@ -66,11 +67,10 @@ module.exports = class HashBounds {
     }
     createLevels() {
         this.LEVELS = [];
-        this.LEVELS.push(new Grid(this.INITIAL, 0))
         var a = this.INITIAL;
         for (var i = 0; i < this.LVL; i++) {
-            a--;
-            this.LEVELS.push(new Grid(a,i + 1))
+            
+            this.LEVELS.push(new Grid(a++,i))
         }
     }
        clear() {
@@ -87,9 +87,11 @@ module.exports = class HashBounds {
           if (!node._HashID) node._HashID = ++this.lastid;
         
         var len = this.LEVELS.length
-        for (var i = 0; i < len; ++i) {
-            if (this.LEVELS[len - i - 1].insert(node)) break;
-        }
+       var index = Math.max(len - ((node.bounds.width + node.bounds.height) >> (this.MIN - 2)),0)
+       this.LEVELS[index].insert(node);
+        //for (var i = 0; i < len; ++i) {
+         //   if (this.LEVELS[len - i - 1].insert(node)) break;
+        //}
     }
 
 
