@@ -1,7 +1,8 @@
+# HashBounds
+
 [![NPM] (https://img.shields.io/badge/Module-Npm-blue.svg)] (https://www.npmjs.com/package/hashbounds)
 [![Donate] (https://img.shields.io/badge/Donate-Paypal-brightgreen.svg)] (https://paypal.me/andrews54757)
 
-# HashBounds
 A super efficient collision check reducer using pos hashes that can handle bounds. Also a good snack made out of potato made for programmers on their lunch breaks
 
 # Usage
