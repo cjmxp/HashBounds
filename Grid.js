@@ -27,9 +27,9 @@ module.exports = class Grid {
         var a = m.entries()
         var b;
         while (b = a.next().value) {
-            if (!c(b[1], b[0])) return true;
+            if (!c(b[1], b[0])) return false;
         }
-        return false;
+        return true;
     }
 
     getKey(x, y) {
