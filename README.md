@@ -12,7 +12,7 @@ A super efficient collision check reducer using pos hashes that can handle bound
 
 ```
 var HashBounds = require('hashbounds')
-var hashBounds = new HashBounds(10,2) // size of parent cells, amount of levels
+var hashBounds = new HashBounds(10,2) // size of parent cells (In squares of 2), amount of levels
 var node = {
 bounds: {
 x: 10,
@@ -40,18 +40,9 @@ hashBounds.delete(node)// delete node
 
 
 ## How does it work?
-This modules works by putting the objects into a grid using their "hashes". First, the bounds top left corner and bottom right corners are determined
 
-```
-(x,y)=>p1 
- _______________
-|               |
-|               |
-|_______________|
-              (x,y)=>p2
-```
+http://cybertron.cg.tu-berlin.de/eitz/pdf/2007_hsh.pdf
 
-Then, it puts the node into the cells that touch the box. It is rather complicated.
 
 
 ## Methods:
