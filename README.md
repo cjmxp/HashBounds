@@ -55,6 +55,9 @@ height: 5
 }
 ```
 
+## Browser
+
+> <script type="text/javascript" src="https://cdn.rawgit.com/ThreeLetters/HashBounds/master/browser/HashBounds.js"></script>
 
 ## Methods:
 
