@@ -45,7 +45,7 @@
         (function (w, M) {
             var config = {
                 numberOfObjects: 200,
-                sizePowerOfTwo: 3,
+                sizePowerOfTwo: 4,
                 levels: 3,
                 minSize: 10,
                 maxSize: 20
@@ -177,8 +177,19 @@
                     ctx.stroke();
                     ctx.restore()
                 };
-                drawGrid(ctx, tree.MAX, tree.MAX, Math.pow(2, tree.INITIAL + tree.LVL), "rgba(255,0,0,0.2)")
-                drawGrid(ctx, tree.MAX, tree.MAX, Math.pow(2, tree.INITIAL), "rgba(198,249,147,0.2)")
+
+                var r = 0,
+                    g = 255,
+                    b = 0,
+                    step = (510 / tree.LVL) >> 0;
+                for (var i = 0; i < tree.LVL; i++) {
+
+
+                    drawGrid(ctx, tree.MAX, tree.MAX, Math.pow(2, tree.INITIAL + i), "rgba(" + r + "," + g + ",0,0.1)")
+                    r += step
+                    g -= step
+                }
+
             };
 
             /*
