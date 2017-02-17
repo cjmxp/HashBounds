@@ -196,10 +196,10 @@ Grid.prototype.forEach = function (bounds, call) {
 
 }
 
-function HashBounds(power, lvl, max) {
+function HashBounds(power, lvl, max,minc) {
     this.INITIAL = power;
     this.LVL = lvl;
-
+this.MINC = minc;
     this.MAX = max;
     this.MIN = power + 1;
     this.LEVELS = []
@@ -220,7 +220,7 @@ HashBounds.prototype.createLevels = function () {
     var a = this.INITIAL;
     for (var i = 0; i < this.LVL; i++, a++) {
 
-        this.LEVELS.push(new Grid(a, i, this.MAX >> a))
+        this.LEVELS.push(new Grid(a, i, this.MAX >> a,this.MINC >> a))
     }
 }
 HashBounds.prototype.clear = function () {
