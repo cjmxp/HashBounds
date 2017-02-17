@@ -201,7 +201,7 @@ function HashBounds(power, lvl, max) {
     this.LVL = lvl;
 
     this.MAX = max;
-    this.MIN = power - 1;
+    this.MIN = power + 1;
     this.LEVELS = []
     this.lastid = 0;
     this.createLevels()
