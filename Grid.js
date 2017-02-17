@@ -17,22 +17,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 module.exports = class Grid {
-    constructor(g, p, size) {
+    constructor(g, p, size,minc) {
         this.POWER = g;
         this.LEVEL = p;
         this.SIZE = size;
+           this.MIN = minc * -1;
         this.DATA = {};
         this.LENGTH = 0;
         this.init()
     }
     init() {
-        if (this.SIZE >= 65535) {
+        if (this.SIZE >= 65535 || this.MIN >= 65535) {
             throw "Maximum amount of buckets are 65535^2"
         } // Max limit is 65535 (16 bits) 
         // console.log(this.SIZE)
-        for (var j = 0; j <= this.SIZE; ++j) {
+        for (var j = this.MIN; j <= this.SIZE; ++j) {
             var x = j << 16
-            for (var i = 0; i <= this.SIZE; ++i) {
+            for (var i = this.MIN; i <= this.SIZE; ++i) {
 
                 var key = this._getKey(x, i);
                 // console.log(key)
