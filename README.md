@@ -8,11 +8,11 @@ A super efficient collision check reducer using pos hashes that can handle bound
 # Usage
 > npm install hashbounds
 
-##### Hashbounds(cellsize,dontUseBounds?,useCenter?,var)
+##### Hashbounds(basecellsize,lvls,max)
 
 ```
 var HashBounds = require('hashbounds')
-var hashBounds = new HashBounds(10,2) // size of parent cells (In squares of 2), amount of levels
+var hashBounds = new HashBounds(10,2,100) // size of base cells (In squares of 2), amount of levels, maximum value
 var node = {
 bounds: {
 x: 10,
@@ -37,12 +37,23 @@ hashBounds.delete(node)// delete node
 ```
 
 
-
-
 ## How does it work?
 
 http://cybertron.cg.tu-berlin.de/eitz/pdf/2007_hsh.pdf
 
+## Requirements
+In order for this to work, all objects inserted must have include `bounds`.
+
+```
+var obj = {
+bounds: {
+x: 0, // x
+y: 0, // y
+width: 5, // width
+height: 5
+}
+}
+```
 
 
 ## Methods:

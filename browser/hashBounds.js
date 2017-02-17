@@ -16,8 +16,8 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-module.exports = class Grid {
-    constructor(g, p, size) {
+function Grid(g, p, size) {
+    
         this.POWER = g;
         this.LEVEL = p;
         this.SIZE = size;
@@ -25,7 +25,7 @@ module.exports = class Grid {
         this.LENGTH = 0;
         this.init()
     }
-    init() {
+    Grid.prototype.init = function() {
         if (this.SIZE >= 65535) {
             throw "Maximum amount of buckets are 65535^2"
         } // Max limit is 65535 (16 bits) 
@@ -42,7 +42,7 @@ module.exports = class Grid {
         }
 
     }
-    _every(m, c) {
+    Grid.prototype._every = function(m, c) {
         var a = m.entries()
         var b;
         while (b = a.next().value) {
@@ -51,18 +51,21 @@ module.exports = class Grid {
         return true;
     }
 
-    getKey(x, y) {
+    Grid.prototype.getKey = function(x, y) {
         return {
             x: x >> this.POWER,
             y: y >> this.POWER
         }
     }
-    _getKey(x, y) {
+    Grid.prototype._getKey = function(x, y) {
         return x | y
 
     }
+    Grid.prototype.checkBorders = function(x, y) {
+        return !(x > this.SIZE || y > this.SIZE)
 
-    insert(node) {
+    }
+    Grid.prototype.insert = function(node) {
 
         //   var a = this.getKey(node.bounds.width, node.bounds.height);
         // if (a.x + a.y >= 2 && this.LEVEL != 0) return false;
@@ -91,7 +94,7 @@ module.exports = class Grid {
         }
         return true;
     }
-    delete(node) {
+    Grid.prototype.delete = function(node) {
         var k1 = node.hash.k1
         var k2 = node.hash.k2
         this.LENGTH--;
@@ -109,8 +112,9 @@ module.exports = class Grid {
 
         }
     }
-    toArray(array, bounds) {
+    Grid.prototype.toArray = function(array, bounds) {
         if (this.LENGTH <= 0) return;
+
         var x1 = bounds.x,
             y1 = bounds.y,
             x2 = bounds.x + bounds.width,
@@ -119,11 +123,9 @@ module.exports = class Grid {
 
         var k1 = this.getKey(x1, y1)
         var k2 = this.getKey(x2, y2)
-        var lenX = k2.x + 1,
-            lenY = k2.y + 1;
-        for (var j = k1.x; j < lenX; ++j) {
+        for (var j = k1.x; j <= k2.x; ++j) {
             var x = j << 16;
-            for (var i = k1.y; i < lenY; ++i) {
+            for (var i = k1.y; i <= k2.y; ++i) {
 
                 var ke = this._getKey(x, i);
 
@@ -137,7 +139,7 @@ module.exports = class Grid {
 
         }
     }
-    every(bounds, call) {
+    Grid.prototype.every = function(bounds, call) {
         if (this.LENGTH <= 0) return true;
         var x1 = bounds.x,
             y1 = bounds.y,
@@ -147,11 +149,9 @@ module.exports = class Grid {
 
         var k1 = this.getKey(x1, y1)
         var k2 = this.getKey(x2, y2)
-        var lenX = k2.x + 1,
-            lenY = k2.y + 1;
-        for (var j = k1.x; j < lenX; ++j) {
+        for (var j = k1.x; j <= k2.x; ++j) {
             var x = j << 16;
-            for (var i = k1.y; i < lenY; ++i) {
+            for (var i = k1.y; i <= k2.y; ++i) {
 
                 var ke = this._getKey(x, i);
 
@@ -167,7 +167,7 @@ module.exports = class Grid {
         }
         return true;
     }
-    forEach(bounds, call) {
+    Grid.prototype.forEach = function(bounds, call) {
         if (this.LENGTH <= 0) return;
         var x1 = bounds.x,
             y1 = bounds.y,
@@ -177,11 +177,10 @@ module.exports = class Grid {
 
         var k1 = this.getKey(x1, y1)
         var k2 = this.getKey(x2, y2)
-        var lenX = k2.x + 1,
-            lenY = k2.y + 1;
-        for (var j = k1.x; j < lenX; ++j) {
+
+        for (var j = k1.x; j <= k2.x; ++j) {
             var x = j << 16;
-            for (var i = k1.y; i < lenY; ++i) {
+            for (var i = k1.y; i <= k2.y; ++i) {
 
                 var ke = this._getKey(x, i);
 
@@ -196,4 +195,98 @@ module.exports = class Grid {
         }
 
     }
-}
+
+function HashBounds(power, lvl, max) {
+        this.INITIAL = power;
+        this.LVL = lvl;
+        this.MAX = max;
+        this.MIN = power - 1;
+        this.LEVELS = []
+        this.lastid = 0;
+        this.createLevels()
+        this.SQRT = [];
+        this.setupSQRT()
+    }
+
+    HashBounds.prototype.setupSQRT = function() {
+        for (var i = 0; i < 255; ++i) {
+            this.SQRT.push(Math.floor(Math.sqrt(i)))
+        }
+    }
+
+    HashBounds.prototype.createLevels = function() {
+        this.LEVELS = [];
+        var a = this.INITIAL;
+        for (var i = 0; i < this.LVL; i++, a++) {
+
+            this.LEVELS.push(new Grid(a, i, this.MAX >> a))
+        }
+    }
+    HashBounds.prototype.clear = function() {
+        this.createLevels();
+    }
+    HashBounds.prototype.update = function(node) {
+        this.delete(node)
+        this.insert(node)
+    }
+    HashBounds.prototype.insert = function(node) {
+        if (node.hash) throw "ERR: A node cannot be already in a hash!"
+        var bounds = node.bounds;
+        node.hash = {}
+        if (!node._HashID) node._HashID = ++this.lastid;
+        if (node._HashSize == node.bounds.width + node.bounds.height) {
+            this.LEVELS[node._HashIndex].insert(node);
+            return;
+        }
+
+        var index = this.SQRT[(node.bounds.width + node.bounds.height) >> this.MIN]
+        if (index > this.LVL) index = this.LVL;
+
+        node._HashIndex = index;
+        node._HashSize = node.bounds.width + node.bounds.height;
+        this.LEVELS[index].insert(node);
+        //for (var i = 0; i < len; ++i) {
+        //   if (this.LEVELS[len - i - 1].insert(node)) break;
+        //}
+    }
+
+
+    HashBounds.prototype.delete = function(node) {
+        if (!node.hash) throw "ERR: Node is not in a hash!"
+        this.LEVELS[node.hash.level].delete(node)
+        node.hash = null;
+    }
+    HashBounds.prototype.toArray = function(bounds) {
+        var array = [];
+        for (var i = 0; i < this.LEVELS.length; i++) {
+            this.LEVELS[i].toArray(array, bounds)
+        }
+        return array;
+    }
+    HashBounds.prototype.every = function(bounds, call) {
+        for (var i = 0; i < this.LEVELS.length; i++) {
+            if (!this.LEVELS[i].every(bounds, call)) return false;
+        }
+        return true;
+    }
+    HashBounds.prototype.forEach = function(bounds, call) {
+        for (var i = 0; i < this.LEVELS.length; i++) {
+            this.LEVELS[i].forEach(bounds, call)
+        }
+    }
+
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+     module.exports = HashBounds;
+   }
+   else {
+     if (typeof define === 'function' && define.amd) {
+       define([], function() {
+         return HashBounds;
+       });
+     }
+     else {
+       window.HashBounds = HashBounds;
+     }
+    }
+    
