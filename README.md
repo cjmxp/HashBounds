@@ -2,7 +2,7 @@
 [![NPM](https://img.shields.io/badge/Module-Npm-blue.svg)](https://www.npmjs.com/package/hashbounds)
 [![Donate](https://img.shields.io/badge/Donate-Paypal-brightgreen.svg)](https://paypal.me/andrews54757)
 
-[![Demo](https://cloud.githubusercontent.com/assets/13282284/23078628/72b2f8ec-f517-11e6-835b-d9a431d0e95b.png)](https://threeletters.github.io/HashBounds/browser/visual/)
+[![Demo](https://cloud.githubusercontent.com/assets/13282284/23081424/b7cd5f16-f522-11e6-8fe9-dfdde154340d.png)](https://threeletters.github.io/HashBounds/browser/visual/)
 
 # HashBounds
 A super efficient collision check reducer using pos hashes that can handle bounds. Also a good snack made out of potato made for programmers on their lunch breaks
