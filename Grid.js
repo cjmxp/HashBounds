@@ -27,7 +27,7 @@ module.exports = class Grid {
         this.init()
     }
     init() {
-        if (this.SIZE >= 65535 || this.MIN >= 65535) {
+        if (this.SIZE >= 65535) {
             throw "Maximum amount of buckets are 65535^2"
         } // Max limit is 65535 (16 bits) 
         // console.log(this.SIZE)
