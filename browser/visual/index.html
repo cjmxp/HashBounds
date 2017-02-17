@@ -1,9 +1,9 @@
-<-- Credit belongs to https://github.com/zufallsgenerator/zufallsgenerator.github.io/blob/master/assets/code/2014-01-26/spatialhash/examples/insert_retrieve.html -->
+<!-- Credit belongs to https://github.com/zufallsgenerator/zufallsgenerator.github.io/blob/master/assets/code/2014-01-26/spatialhash/examples/insert_retrieve.html -->
 
 <!doctype html>
 <html>
 	<head>
-		<title>Quadtree Test</title>
+		<title>HashBounds Test</title>
 		<style type="text/css">
 			* {
 				margin: 0;
@@ -26,15 +26,14 @@
 		</style>
 	</head>
 	<body>
-    <h1>Spatial Hashing</h1>
+    <h1>HashBounds</h1>
     <div id="controllerContainer" style="float: right;">
     </div>
 		<div id="canvasContainer">
 			<canvas id="canvas" width="400" height="300"></canvas>
 		</div>
 		
-<!--		<script src="../quadtree.js"></script>-->
-		<script src="../spatialhash.js"></script>
+		<script src="../HashBounds.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
 		
 		<script>		
@@ -42,13 +41,19 @@
 		(function(w, M) {
       var config = {
         numberOfObjects: 200,
-        sizePowerOfTwo: 4
+        sizePowerOfTwo: 2,
+	levels: 3,
+	minSize: 10,
+	      maxSize: 20
       };
       var lastConfig = {};
       
       function saveLastConfig() {
         lastConfig.numberOfObjects = config.numberOfObjects;
         lastConfig.sizePowerOfTwo = config.sizePowerOfTwo;
+	  lastConfig.levels = config.levels;
+	      lastConfig.minSize = config.minSize;
+	      lastConfig.maxSize = config.maxSize;
       }
       
       
@@ -58,6 +63,9 @@
       container.appendChild(gui.domElement);
       gui.add(config, "numberOfObjects", 1, 1000).step(1);
       gui.add(config, "sizePowerOfTwo", 1, 32).step(1);
+      gui.add(config, "levels", 1, 32).step(1);
+      gui.add(config, "minSize", 1, 90).step(1);
+     gui.add(config, "maxSize", 1, 100).step(1);
       saveLastConfig();
 
       			
@@ -89,7 +97,7 @@
       var myTree;
       
       function initSpatialHash() {
-        myTree = new SpatialHash(config.sizePowerOfTwo);
+        myTree = new HashBounds(config.sizePowerOfTwo,config.levels,500);
       }
       
       initSpatialHash();
