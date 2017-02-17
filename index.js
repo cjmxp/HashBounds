@@ -98,7 +98,7 @@ module.exports = class HashBounds {
         }
 
         var index = this.SQRT[(node.bounds.width + node.bounds.height) >> this.MIN]
-        if (index > this.LVL) index = this.LVL;
+        if (index >= this.LVL) index = this.LVL - 1;
 
         node._HashIndex = index;
         node._HashSize = node.bounds.width + node.bounds.height;
