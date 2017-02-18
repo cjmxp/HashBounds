@@ -47,8 +47,8 @@
                 numberOfObjects: 200,
                 sizePowerOfTwo: 4,
                 levels: 3,
-                minSize: 10,
-                maxSize: 20
+                minSize: 1,
+                maxSize: 25
             };
             var lastConfig = {};
 
@@ -68,9 +68,9 @@
             var container = document.getElementById('controllerContainer');
             container.appendChild(gui.domElement);
             gui.add(config, "numberOfObjects", 1, 10000).step(1);
-            gui.add(config, "sizePowerOfTwo", 1, 32).step(1);
-            gui.add(config, "levels", 1, 32).step(1);
-            gui.add(config, "minSize", 1, 90).step(1);
+            gui.add(config, "sizePowerOfTwo", 1, 15).step(1);
+            gui.add(config, "levels", 1, 15).step(1);
+            gui.add(config, "minSize", 1, 99).step(1);
             gui.add(config, "maxSize", 1, 100).step(1);
             saveLastConfig();
 
