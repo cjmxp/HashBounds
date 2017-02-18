@@ -47,8 +47,9 @@
                 numberOfObjects: 200,
                 sizePowerOfTwo: 4,
                 levels: 3,
-                minSize: 10,
-                maxSize: 20
+                minSize: 1,
+                maxSize: 25,
+                searchSize: 20
             };
             var lastConfig = {};
 
@@ -58,6 +59,7 @@
                 lastConfig.levels = config.levels;
                 lastConfig.minSize = config.minSize;
                 lastConfig.maxSize = config.maxSize;
+                lastConfig.searchSize = config.searchSize;
             }
 
 
@@ -68,10 +70,11 @@
             var container = document.getElementById('controllerContainer');
             container.appendChild(gui.domElement);
             gui.add(config, "numberOfObjects", 1, 10000).step(1);
-            gui.add(config, "sizePowerOfTwo", 1, 32).step(1);
-            gui.add(config, "levels", 1, 32).step(1);
-            gui.add(config, "minSize", 1, 90).step(1);
+            gui.add(config, "sizePowerOfTwo", 1, 15).step(1);
+            gui.add(config, "levels", 1, 15).step(1);
+            gui.add(config, "minSize", 1, 99).step(1);
             gui.add(config, "maxSize", 1, 100).step(1);
+            gui.add(config, "searchSize", 1, 300).step(1);
             saveLastConfig();
 
 
@@ -120,8 +123,8 @@
             var myHero = {
                 x: 0,
                 y: 0,
-                width: 20,
-                height: 20
+                width: config.searchSize,
+                height: config.searchSize
             };
 
 
@@ -181,14 +184,20 @@
                 var r = 0,
                     g = 255,
                     b = 0,
-                    step = (510 / tree.LVL) >> 0;
+                    step = (255 / tree.LVL);
+
                 for (var i = 0; i < tree.LVL; i++) {
 
 
-                    drawGrid(ctx, tree.MAX, tree.MAX, Math.pow(2, tree.INITIAL + i), "rgba(" + r + "," + g + ",0,0.1)")
+
                     r += step
                     g -= step
+                    drawGrid(ctx, tree.MAX, tree.MAX, Math.pow(2, tree.INITIAL + i), "rgba(" + (r >> 0) + "," + (g >> 0) + ",0,0.1)")
+
+
+
                 }
+
 
             };
 
@@ -260,7 +269,10 @@
                 if (lastConfig.minSize !== config.minSize || lastConfig.maxSize !== config.maxSize) {
                     createObjects();
                 }
-
+                if (lastConfig.searchSize !== config.searchSize) {
+                    myHero.width = config.searchSize;
+                    myHero.height = config.searchSize;
+                }
                 saveLastConfig();
             }
 
