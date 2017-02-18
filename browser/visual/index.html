@@ -48,7 +48,8 @@
                 sizePowerOfTwo: 4,
                 levels: 3,
                 minSize: 1,
-                maxSize: 25
+                maxSize: 25,
+		searchSize: 20
             };
             var lastConfig = {};
 
@@ -58,6 +59,7 @@
                 lastConfig.levels = config.levels;
                 lastConfig.minSize = config.minSize;
                 lastConfig.maxSize = config.maxSize;
+		lastConfig.searchSize = config.searchSize;
             }
 
 
@@ -72,6 +74,7 @@
             gui.add(config, "levels", 1, 15).step(1);
             gui.add(config, "minSize", 1, 99).step(1);
             gui.add(config, "maxSize", 1, 100).step(1);
+            gui.add(config, "searchSize", 1, 100).step(1);
             saveLastConfig();
 
 
@@ -120,8 +123,8 @@
             var myHero = {
                 x: 0,
                 y: 0,
-                width: 20,
-                height: 20
+                width: config.searchSize,
+                height: config.searchSize
             };
 
 
@@ -260,7 +263,10 @@
                 if (lastConfig.minSize !== config.minSize || lastConfig.maxSize !== config.maxSize) {
                     createObjects();
                 }
-
+             if (lastConfig.searchSize !== config.searchSize) {
+	myHero.width = config.searchSize;
+		     myHero.height = config.searchSize;
+             }
                 saveLastConfig();
             }
 
