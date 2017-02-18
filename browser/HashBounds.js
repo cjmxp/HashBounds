@@ -58,8 +58,8 @@ Holder.prototype.sub = function () {
     if (this.parent) {
         this.parent.sub();
         if (this.parent.skip) {
-            this.skip = this.parent.skip * 2;
-            this.start = this.parent.start * 2;
+            this.skip = this.parent.skip << 1;
+            this.start = this.parent.start << 1;
         }
 
     }
