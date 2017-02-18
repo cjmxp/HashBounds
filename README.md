@@ -71,3 +71,12 @@ height: 5
 6. forEach(bounds,call): Loop through objects in certain bounds
 7. every(bounds,call): Same a .forEach(bounds), but stops execution when returning false
 
+## Other Info
+
+* insert() method very fast
+* delete(), less efficient than insert.
+* update(), okay
+* forEach(), fast
+* More efficient than a quadtree when there are many objects
+* More efficient than a spatial hash when object's sizes vary
+* A little bit more efficient than a "normal" heiracheal hash, due to the parent-child cell binding.
