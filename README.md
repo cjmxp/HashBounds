@@ -73,9 +73,9 @@ height: 5
 
 ## Other Info
 
-* insert() method very fast
-* delete(), less efficient than insert.
-* update(), okay
+* insert() method very fast (264,867 ops/sec)
+* delete(), less efficient than insert (9,201 ops/sec).
+* update(), okay (8,541 ops/sec)
 * forEach(), fast
 * More efficient than a quadtree when there are many objects
 * More efficient than a spatial hash when object's sizes vary
