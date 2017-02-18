@@ -49,7 +49,7 @@
                 levels: 3,
                 minSize: 1,
                 maxSize: 25,
-		searchSize: 20
+                searchSize: 20
             };
             var lastConfig = {};
 
@@ -59,7 +59,7 @@
                 lastConfig.levels = config.levels;
                 lastConfig.minSize = config.minSize;
                 lastConfig.maxSize = config.maxSize;
-		lastConfig.searchSize = config.searchSize;
+                lastConfig.searchSize = config.searchSize;
             }
 
 
@@ -184,14 +184,20 @@
                 var r = 0,
                     g = 255,
                     b = 0,
-                    step = (510 / tree.LVL) >> 0;
+                    step = (255 / tree.LVL);
+
                 for (var i = 0; i < tree.LVL; i++) {
 
 
-                    drawGrid(ctx, tree.MAX, tree.MAX, Math.pow(2, tree.INITIAL + i), "rgba(" + r + "," + g + ",0,0.1)")
+
                     r += step
                     g -= step
+                    drawGrid(ctx, tree.MAX, tree.MAX, Math.pow(2, tree.INITIAL + i), "rgba(" + (r >> 0) + "," + (g >> 0) + ",0,0.1)")
+
+
+
                 }
+
 
             };
 
@@ -263,10 +269,10 @@
                 if (lastConfig.minSize !== config.minSize || lastConfig.maxSize !== config.maxSize) {
                     createObjects();
                 }
-             if (lastConfig.searchSize !== config.searchSize) {
-	myHero.width = config.searchSize;
-		     myHero.height = config.searchSize;
-             }
+                if (lastConfig.searchSize !== config.searchSize) {
+                    myHero.width = config.searchSize;
+                    myHero.height = config.searchSize;
+                }
                 saveLastConfig();
             }
 
