@@ -16,12 +16,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+var Holder = require('./Holder.js')
 module.exports = class Grid {
-    constructor(g, p, size,minc) {
+    constructor(g, p, size, minc, prev) {
         this.POWER = g;
         this.LEVEL = p;
+        this.PREV = prev;
         this.SIZE = size;
-           this.MIN = minc * -1;
+        this.MIN = minc * -1;
         this.DATA = {};
         this.LENGTH = 0;
         this.init()
@@ -33,23 +35,19 @@ module.exports = class Grid {
         // console.log(this.SIZE)
         for (var j = this.MIN; j <= this.SIZE; ++j) {
             var x = j << 16
+            var bx = (j >> 1) << 16;
             for (var i = this.MIN; i <= this.SIZE; ++i) {
 
+                var by = i >> 1
                 var key = this._getKey(x, i);
-                // console.log(key)
-                this.DATA[key] = new Map()
+
+
+                if (this.PREV) var l = this.PREV.DATA[this._getKey(bx, by)];
+                else var l = false;
+                this.DATA[key] = new Holder(l, i);
 
             }
         }
-
-    }
-    _every(m, c) {
-        var a = m.entries()
-        var b;
-        while (b = a.next().value) {
-            if (!c(b[1], b[0])) return false;
-        }
-        return true;
     }
 
     getKey(x, y) {
@@ -61,6 +59,40 @@ module.exports = class Grid {
     _getKey(x, y) {
         return x | y
 
+    }
+    _get(bounds, call) {
+        var x1 = bounds.x,
+            y1 = bounds.y,
+            x2 = bounds.x + bounds.width,
+            y2 = bounds.y + bounds.height;
+
+        var k1 = this.getKey(x1, y1)
+        var k2 = this.getKey(x2, y2)
+
+        for (var j = k1.x; j <= k2.x; ++j) {
+
+            var x = j << 16;
+
+            for (var i = k1.y; i <= k2.y; ++i) {
+
+
+                var key = this._getKey(x, i);
+                if (this.DATA[key]) {
+
+                    if (this.DATA[key].skip > 1) {
+
+                        i = this.DATA[key].start + this.DATA[key].skip - 1;
+
+
+                    } else {
+
+                        if (!call(this.DATA[key])) return false
+                    }
+                }
+
+            }
+        }
+        return true;
     }
 
     insert(node) {
@@ -112,89 +144,47 @@ module.exports = class Grid {
     }
     toArray(array, bounds) {
         if (this.LENGTH <= 0) return;
-        var x1 = bounds.x,
-            y1 = bounds.y,
-            x2 = bounds.x + bounds.width,
-            y2 = bounds.y + bounds.height,
-            h = {};
+        var hsh = {};
 
-        var k1 = this.getKey(x1, y1)
-        var k2 = this.getKey(x2, y2)
-        var lenX = k2.x + 1,
-            lenY = k2.y + 1;
-        for (var j = k1.x; j < lenX; ++j) {
-            var x = j << 16;
-            for (var i = k1.y; i < lenY; ++i) {
+        this._get(bounds, function (cell) {
 
-                var ke = this._getKey(x, i);
+            cell.forEach(function (obj, i) {
+                if (hsh[i]) return
+                hsh[i] = true;
+                array.push(obj);
 
-                if (this.DATA[ke]) this.DATA[ke].forEach((node, i) => {
-
-                    if (h[i]) return;
-                    h[i] = true;
-                    array.push(node)
-                })
-            }
-
-        }
+            })
+            return true;
+        })
     }
     every(bounds, call) {
-        if (this.LENGTH <= 0) return true;
-        var x1 = bounds.x,
-            y1 = bounds.y,
-            x2 = bounds.x + bounds.width,
-            y2 = bounds.y + bounds.height,
-            h = {};
+        if (this.LENGTH <= 0) return;
+        var hsh = {};
 
-        var k1 = this.getKey(x1, y1)
-        var k2 = this.getKey(x2, y2)
-        var lenX = k2.x + 1,
-            lenY = k2.y + 1;
-        for (var j = k1.x; j < lenX; ++j) {
-            var x = j << 16;
-            for (var i = k1.y; i < lenY; ++i) {
+        this._get(bounds, function (cell) {
 
-                var ke = this._getKey(x, i);
+            return cell.every(function (obj, i) {
+                if (hsh[i]) return true;
+                hsh[i] = true;
+                return call(obj);
 
-                if (this.DATA[ke])
-                    if (!this._every(this.DATA[ke], (a, b) => {
-
-                            if (h[b]) return true;
-                            h[b] = true;
-                            return call(a, b);
-                        })) return false;
-            }
-
-        }
-        return true;
+            })
+        })
     }
     forEach(bounds, call) {
+
         if (this.LENGTH <= 0) return;
-        var x1 = bounds.x,
-            y1 = bounds.y,
-            x2 = bounds.x + bounds.width,
-            y2 = bounds.y + bounds.height,
-            h = {};
+        var hsh = {};
 
-        var k1 = this.getKey(x1, y1)
-        var k2 = this.getKey(x2, y2)
-        var lenX = k2.x + 1,
-            lenY = k2.y + 1;
-        for (var j = k1.x; j < lenX; ++j) {
-            var x = j << 16;
-            for (var i = k1.y; i < lenY; ++i) {
+        this._get(bounds, function (cell) {
 
-                var ke = this._getKey(x, i);
+            cell.forEach(function (obj, i) {
+                if (hsh[i]) return;
+                hsh[i] = true;
+                call(obj);
 
-                if (this.DATA[ke])
-                    this.DATA[ke].forEach((a, b) => {
-                        if (h[b]) return;
-                        h[b] = true;
-                        call(a, b)
-                    })
-            }
-
-        }
-
+            })
+            return true;
+        })
     }
 }
