@@ -1,7 +1,7 @@
 {
     "name": "hashbounds",
-    "version": "3.5.0",
-    "description": "A bound-based spatial hashing system",
+    "version": "3.7.0",
+    "description": "A spatial partitioning system",
     "main": "index.js",
     "scripts": {
         "test": "node index.js"
