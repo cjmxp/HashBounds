@@ -41,7 +41,7 @@ hashBounds.delete(node)// delete node
 
 ## How does it work?
 
-It is a combination of a Spatial Hash, a Heiracheal structure, and a Quad Tree merged togethor.
+https://github.com/ThreeLetters/HashBounds/blob/master/EXPLANATION.md
 
 ## Requirements
 In order for this to work, all objects inserted must have include `bounds`.
