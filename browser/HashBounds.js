@@ -133,7 +133,7 @@ class Holder {
         if (!this.LEN) return true;
         if (!this.MAP.every(call)) return false;
         if (this.CHILDREN[0]) {
-            for (var i = 0; i < 4; ++i) {
+            for (var i = 0; i < this.CHILDREN.length; ++i) {
                 if (this.checkIntersect(bounds, this.CHILDREN[i].BOUNDS)) {
                     if (!this.CHILDREN[i].every(bounds, call)) return false;
                 }
@@ -146,7 +146,7 @@ class Holder {
         if (!this.LEN) return;
         this.MAP.forEach(call)
         if (this.CHILDREN[0]) {
-            for (var i = 0; i < 4; ++i) {
+            for (var i = 0; i < this.CHILDREN.length; ++i) {
                 if (this.checkIntersect(bounds, this.CHILDREN[i].BOUNDS)) {
                     this.CHILDREN[i].forEach(bounds, call)
                 }
