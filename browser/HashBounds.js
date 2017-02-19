@@ -181,10 +181,10 @@ class Grid {
             throw "Maximum amount of buckets are 65535^2"
         } // Max limit is 65535 (16 bits) 
         // console.log(this.SIZE)
-        for (var j = this.MIN - 1; j <= (this.SIZE + 1); ++j) {
+        for (var j = this.MIN; j <= this.SIZE; ++j) {
             var x = j << 16
             var bx = (j >> 1) << 16;
-            for (var i = this.MIN - 1; i <= (this.SIZE + 1); ++i) {
+            for (var i = this.MIN; i <= this.SIZE; ++i) {
 
                 var by = i >> 1
                 var key = this._getKey(x, i);
@@ -339,7 +339,7 @@ window.HashBounds = class HashBounds {
         this.MIN = power + 1;
         this.LEVELS = []
         this.lastid = 0;
-        this.BASE = false;
+           this.BASE = false;
         this.createLevels()
         this.SQRT = [];
         this.setupSQRT()
@@ -355,8 +355,9 @@ window.HashBounds = class HashBounds {
         var last = false;
         for (var i = this.LVL - 1; i >= 0; --i) {
             var a = this.INITIAL + i;
-
-            var grid = new Grid(a, i, this.MAX >> a, this.MINC >> a, last)
+            var div = 1 << a;
+               
+            var grid = new Grid(a, i, Math.ceil(this.MAX / div), Math.ceil(this.MINC / div), last)
             if (!this.BASE) this.BASE = grid;
             this.LEVELS[i] = grid;
             last = grid;
@@ -401,15 +402,15 @@ window.HashBounds = class HashBounds {
         return this.BASE.toArray(bounds);
     }
     every(bounds, call) {
-        return this.BASE.every(bounds, call);
+            return this.BASE.every(bounds,call);
     }
     forEach(bounds, call) {
-
-
-        this.BASE.forEach(bounds, call)
-
-
-
+  
+        
+        this.BASE.forEach(bounds,call) 
+               
+        
+    
     }
 
 }
