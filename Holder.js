@@ -1,10 +1,24 @@
 "use strict"
-
+/*
+       HashBounds - A hierarchical spacial hashing system
+    Copyright (C) 2016 Andrew S
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var LinkedList = require('./LinkedList.js')
 module.exports = class Holder {
     constructor(parent, x, y, power, lvl) {
         this.PARENT = parent;
-        if (this.PARENT) this.PARENT.CHILDREN.push(this)
-        this.MAP = new Map();
+         this.PARENT.CHILDREN.push(this)
+        this.MAP = new LinkedList();
         this.POWER = power;
         this.LVL = lvl
         this.LEN = 0;
@@ -38,54 +52,52 @@ module.exports = class Holder {
 
     }
 
-    set(id, node) {
+    insert(node) {
 
-        this.MAP.set(id, node)
+        this.MAP.insert(node)
         this.add()
     }
     add() {
         ++this.LEN;
-
-
-
-        if (this.PARENT) {
             this.PARENT.add();
 
-
-        }
+        
     }
 
-    _get(bounds, call) {
+    every(bounds, call) {
         if (!this.LEN) return true;
-        if (!this._every(call)) return false;
+        if (!this.MAP.every(call)) return false;
         if (this.CHILDREN[0]) {
             for (var i = 0; i < 4; ++i) {
                 if (this.checkIntersect(bounds, this.CHILDREN[i].BOUNDS)) {
-                    if (!this.CHILDREN[i]._get(bounds, call)) return false;
+                    if (!this.CHILDREN[i].every(bounds, call)) return false;
                 }
             }
 
         }
         return true;
     }
-    sub() {
-        --this.LEN;
-        if (this.PARENT) {
-            this.PARENT.sub();
+         forEach(bounds, call) {
+        if (!this.LEN) return;
+           this.MAP.forEach(call)
+        if (this.CHILDREN[0]) {
+            for (var i = 0; i < 4; ++i) {
+                if (this.checkIntersect(bounds, this.CHILDREN[i].BOUNDS)) {
+                    this.CHILDREN[i].forEach(bounds, call)
+                }
+            }
 
         }
+        return;
     }
-    delete(id) {
-        this.MAP.delete(id)
+    sub() {
+        --this.LEN;
+            this.PARENT.sub();
+    }
+    delete(node) {
+        this.MAP.delete(node)
         this.sub()
     }
-    _every(c) {
-        var a = this.MAP.entries()
-        var b;
-        while (b = a.next().value) {
-            if (!c(b[1], b[0])) return false;
-        }
-        return true;
-    }
+   
 
 }
