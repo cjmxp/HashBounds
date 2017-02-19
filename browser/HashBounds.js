@@ -339,7 +339,7 @@ window.HashBounds = class HashBounds {
         this.MIN = power + 1;
         this.LEVELS = []
         this.lastid = 0;
-           this.BASE = false;
+        this.BASE = false;
         this.createLevels()
         this.SQRT = [];
         this.setupSQRT()
@@ -355,9 +355,8 @@ window.HashBounds = class HashBounds {
         var last = false;
         for (var i = this.LVL - 1; i >= 0; --i) {
             var a = this.INITIAL + i;
-            var div = 1 << a;
-               
-            var grid = new Grid(a, i, Math.ceil(this.MAX / div), Math.ceil(this.MINC / div), last)
+
+            var grid = new Grid(a, i, this.MAX >> a, this.MINC >> a, last)
             if (!this.BASE) this.BASE = grid;
             this.LEVELS[i] = grid;
             last = grid;
@@ -402,15 +401,15 @@ window.HashBounds = class HashBounds {
         return this.BASE.toArray(bounds);
     }
     every(bounds, call) {
-            return this.BASE.every(bounds,call);
+        return this.BASE.every(bounds, call);
     }
     forEach(bounds, call) {
-  
-        
-        this.BASE.forEach(bounds,call) 
-               
-        
-    
+
+
+        this.BASE.forEach(bounds, call)
+
+
+
     }
 
 }
