@@ -12,7 +12,7 @@ A super efficient collision check reducer. Also a good snack made out of potato 
 
 ##### Hashbounds(basecellsize,lvls,max,min)
 
-```
+```js
 var HashBounds = require('hashbounds')
 var hashBounds = new HashBounds(10,2,100) // size of base cells (In squares of 2), amount of levels, maximum value
 var node = {
@@ -46,7 +46,7 @@ https://github.com/ThreeLetters/HashBounds/blob/master/EXPLANATION.md
 ## Requirements
 In order for this to work, all objects inserted must have include `bounds`.
 
-```
+```js
 var obj = {
     bounds: {
         x: 0, // x
