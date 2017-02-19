@@ -64,6 +64,7 @@ module.exports = class HashBounds {
         this.MIN = power + 1;
         this.LEVELS = []
         this.lastid = 0;
+           this.BASE = false;
         this.createLevels()
         this.SQRT = [];
         this.setupSQRT()
@@ -81,6 +82,7 @@ module.exports = class HashBounds {
             var a = this.INITIAL + i;
 
             var grid = new Grid(a, i, this.MAX >> a, this.MINC >> a, last)
+            if (!this.BASE) this.BASE = grid;
             this.LEVELS[i] = grid;
             last = grid;
         }
@@ -121,22 +123,18 @@ module.exports = class HashBounds {
         node.hash = null;
     }
     toArray(bounds) {
-        var array = [];
-        for (var i = 0; i < this.LEVELS.length; i++) {
-            this.LEVELS[i].toArray(array, bounds)
-        }
-        return array;
+        return this.BASE.toArray(bounds);
     }
     every(bounds, call) {
-        for (var i = 0; i < this.LEVELS.length; i++) {
-            if (!this.LEVELS[i].every(bounds, call)) return false;
-        }
-        return true;
+            return this.BASE.every(bounds,call);
     }
     forEach(bounds, call) {
-        for (var i = 0; i < this.LEVELS.length; i++) {
-            this.LEVELS[i].forEach(bounds, call)
-        }
+  
+        
+        this.BASE.forEach(bounds,call) 
+               
+        
+    
     }
 
 }
