@@ -43,9 +43,8 @@ module.exports = class HashBounds {
         var last = false;
         for (var i = this.LVL - 1; i >= 0; --i) {
             var a = this.INITIAL + i;
-            var div = 1 << a;
-               
-            var grid = new Grid(a, i, Math.ceil(this.MAX / div), Math.ceil(this.MINC / div), last)
+
+            var grid = new Grid(a, i, this.MAX >> a, this.MINC >> a, last)
             if (!this.BASE) this.BASE = grid;
             this.LEVELS[i] = grid;
             last = grid;
