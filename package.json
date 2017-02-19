@@ -1,6 +1,6 @@
 {
     "name": "hashbounds",
-    "version": "3.7.0",
+    "version": "3.7.5",
     "description": "A spatial partitioning system",
     "main": "index.js",
     "scripts": {
