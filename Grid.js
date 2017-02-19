@@ -169,7 +169,7 @@ module.exports = class Grid {
                 hsh[i] = true;
                 call(obj);
                 return true;
-            }, )
+            })
             return true;
         })
     }
