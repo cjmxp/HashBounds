@@ -181,10 +181,10 @@ class Grid {
             throw "Maximum amount of buckets are 65535^2"
         } // Max limit is 65535 (16 bits) 
         // console.log(this.SIZE)
-        for (var j = this.MIN; j <= this.SIZE; ++j) {
+        for (var j = this.MIN; j <= (this.SIZE + 1); ++j) {
             var x = j << 16
             var bx = (j >> 1) << 16;
-            for (var i = this.MIN; i <= this.SIZE; ++i) {
+            for (var i = this.MIN; i <= (this.SIZE + 1); ++i) {
 
                 var by = i >> 1
                 var key = this._getKey(x, i);
