@@ -27,8 +27,8 @@ function Holder(parent, x, y, power, lvl) {
     this.BOUNDS = {
         x: x << power,
         y: y << power,
-        width: 2 << power,
-        height: 2 << power
+        width: 1 << power,
+        height: 1 << power
     }
     this.CHILDREN = []
 
