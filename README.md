@@ -5,7 +5,7 @@
 [![Demo](https://cloud.githubusercontent.com/assets/13282284/23081424/b7cd5f16-f522-11e6-8fe9-dfdde154340d.png)](https://threeletters.github.io/HashBounds/browser/visual/)
 
 # HashBounds
-A super efficient collision check reducer using pos hashes that can handle bounds. Also a good snack made out of potato made for programmers on their lunch breaks
+A super efficient collision check reducer. Also a good snack made out of potato made for programmers on their lunch breaks
 
 # Usage
 > npm install hashbounds
@@ -41,7 +41,7 @@ hashBounds.delete(node)// delete node
 
 ## How does it work?
 
-http://cybertron.cg.tu-berlin.de/eitz/pdf/2007_hsh.pdf
+It is a combination of a Spatial Hash, a Heiracheal structure, and a Quad Tree merged togethor.
 
 ## Requirements
 In order for this to work, all objects inserted must have include `bounds`.
@@ -73,10 +73,10 @@ height: 5
 
 ## Other Info
 
-* insert() method very fast (264,867 ops/sec)
-* delete(), less efficient than insert (9,201 ops/sec).
+* insert() method very fast (264,867 ops/sec, efficiency - O(1))
+* delete(), less efficient than insert (9,201 ops/sec, efficiency - O(1)).
 * update(), okay (8,541 ops/sec)
-* forEach(), fast
-* More efficient than a quadtree when there are many objects
-* More efficient than a spatial hash when object's sizes vary
-* A little bit more efficient than a "normal" heiracheal hash, due to the parent-child cell binding.
+* forEach(), fast (Fast as a quadtree)
+* More efficient than a quadtree
+* More efficient than a spatial hash
+* More efficient than a "normal" heiracheal hash
