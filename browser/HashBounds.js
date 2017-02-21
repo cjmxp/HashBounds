@@ -346,8 +346,8 @@ window.HashBounds = class HashBounds {
         var last = false;
         for (var i = this.LVL - 1; i >= 0; --i) {
             var a = this.INITIAL + i;
-
-            var grid = new Grid(a, i, this.MAX >> a, this.MINC >> a, last)
+var b = 1 << a;
+            var grid = new Grid(a, i, Math.ceil(this.MAX / b), Math.ceil(this.MINC / b), last)
             if (!this.BASE) this.BASE = grid;
             this.LEVELS[i] = grid;
             last = grid;
