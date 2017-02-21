@@ -149,7 +149,7 @@ var array = [];
     every(bounds, call) {
         var hsh = {};
 
-        this._get(bounds, function (cell) {
+       return this._get(bounds, function (cell) {
 
             return cell.every(bounds, function (obj, i) {
                 if (hsh[obj._HashID]) return true;
