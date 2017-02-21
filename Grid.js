@@ -132,9 +132,9 @@ module.exports = class Grid {
 
         }
     }
-    toArray(array, bounds) {
+    toArray( bounds) {
         var hsh = {};
-
+var array = [];
         this._get(bounds, function (cell) {
 
             cell.forEach(bounds, function (obj) {
