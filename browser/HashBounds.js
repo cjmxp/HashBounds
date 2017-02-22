@@ -291,6 +291,7 @@ var array = [];
             })
             return true;
         })
+                   return array;
     }
     every(bounds, call) {
         var hsh = {};
