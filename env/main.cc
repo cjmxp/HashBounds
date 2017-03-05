@@ -17,7 +17,7 @@
 
 
 #include <unordered_map>
-
+#include <cmath>
 
 class Holder {
   public:
@@ -204,3 +204,44 @@ void Grid::insert(int x,int y,int w,int h,int node) { // change int node.
 
         }
     }
+class HashBounds = {
+       public: 
+         int INITIAl,LVL,MAX,MIN;
+         int LASTID = 0;
+         Grid* BASE;
+         int SQRT[500];
+         Grid* LEVELS[10];
+       
+       
+};
+
+void HashBounds::init(initial,level,max,min) {
+       INITIAL = initial;
+       LVL = level;
+       MAX = max;
+       MIN = min;
+        for (int i = 0; i < 499; ++i) {
+            SQRT[i] = floor(sqrt(i));
+        }
+       int initi = 0;
+       Grid prev;
+        for (int i = LVL - 1; i >= 0; --i) {
+            int a = INITIAL + i;
+            int b = 1 << a;
+               Grid grid;
+               
+  
+            if (!initi) { 
+                   BASE = &grid;
+                    grid.init(a, i, ceil(MAX / b), ceil(MINC / b), NULL);
+                   prev = grid;
+                        initi = 1;  
+                        } else {
+              grid.init(a, i, ceil(MAX / b), ceil(MINC / b), prev); 
+                   prev = grid;
+            }
+              
+            LEVELS[i] = grid;
+            last = grid;
+        }
+}
