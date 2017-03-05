@@ -1,66 +1,80 @@
-
-#define NULL 0
-class LinkedListNode {
+class Holder {
   public:
-     LinkedListNode* CHILD;
-     int NODE;
-     void forEach (int(*)(int));
-     int every (int(*)(int));
-     void destroy (void);
-     void remove(int);
+    Holder* PARENT;
+    Holder* CHILDREN[4];
+    int ChildIndex = 0;
+    int LEN = 0;
+    int POWER,LVL,X,Y;
+    int BoundX,BoundY,BoundWidth,BoundHeight;
+    void init(Holder*,int,int,int,int);
+    int checkIntersect(int,int,int,int,int,int,int,int);
+    void set(int,int);
+    void delete(int);
+    void add(void);
+    void sub(void);
+    void forEach(int,int,int,int,void (*)(int));
+    int every(int,int,int,int,int(*)(int));
+}
+void Holder::init(Holder* parent,int x, int y, int power, int lvl) {
+  PARENT = parent;
+  PARENT->CHILDREN[PARENT->ChildIndex++] = this;
+  X = x;
+  Y = y;
+  POWER = power;
+  LVL = LVL;
+  BoundX = x << power;
+  BoundY = y << power;
+  BoundWidth = 1 << power;
+  BoundHeight = 1 << power;
+}
+int Holder::checkIntersect(int ax,int ay,int aw,int ah,int bx,int by,int bw,int bh) {
+  int x1 = ax + aw;
+  int y1 = ay + ah;
+  int x2 = bx + bw;
+  int y2 = by + bh;
   
-};
-void LinkedListNode::forEach(int(*call)(int)) {
-  call(NODE);
-    if (CHILD) CHILD->forEach(call);
+  return !(bx >= x1 || x2 <= ax || by >= y1 || y2 <= ay);
 }
-int LinkedListNode::every(int(*call)(int)) {
-  if (!call(NODE)) return 0;
-  
-  if (!CHILD) return 1;
-  
-    return CHILD->every(call);
+void Holder::set(int id, int node) {
+  // need map
+  add();
 }
-void LinkedListNode::remove(int node) {
-  if (CHILD && CHILD->NODE == node) {
-    CHILD = CHILD->CHILD; 
-  } else {
-   CHILD->remove(node);
-  }
-  
+void Holder::delete(int id) {
+  // need map
+ sub(); 
 }
-class LinkedList {
- public:
-  LinkedListNode* CHILD = NULL;
-  void set(int);
-  void forEach(int(*)(int));
-  int every(int(*)(int));
-  void remove(int);
-  void insert(int);
-    
-};
-void LinkedList::insert(int val) {
-  LinkedListNode node;
-  node.NODE = val;
-  if (CHILD) node.CHILD = CHILD; else node.CHILD = NULL;
-  CHILD = &node;
+void Holder::add(void) {
+  ++LEN;
+    PARENT->add();
 }
-void LinkedList::forEach(int(*call)(int)) {
- if (CHILD) CHILD->forEach(call);
+void Holder::sub(void) {
+    --LEN;
+    PARENT->sub();
 }
-int LinkedList::every(int(*call)(int)) {
-  if (CHILD) return CHILD->every(call); else return 1;
-}
-void LinkedList::remove(int node) {
-  if (CHILD && CHILD->NODE == node) {
-    CHILD = CHILD->CHILD; 
-  } else {
-   CHILD->remove(node);
-  }
-}
+void Holder::forEach(int x, int y, int w, int h,void (*call)(int)) {
+        if (!LEN) return;
+         // need map
+        if (CHILDREN[0]) {
+            for (var i = 0; i < ChildIndex; ++i) {
+                if (checkIntersect(x,y,w,h, CHILDREN[i].BoundX, CHILDREN[i].BoundY,CHILDREN[i].BoundWidth,CHILDREN[i].BoundHeight)) {
+                    this.CHILDREN[i].forEach(x,y,w,h, call)
+                }
+            }
 
-int main() {
-LinkedList list;
-
-  return 1;
+        }
+        return;
 }
+int Holder::every(int x, int y, int w, int h,int (*call)(int)) {
+        if (!LEN) return 1;
+         // need map
+        if (CHILDREN[0]) {
+            for (var i = 0; i < ChildIndex; ++i) {
+                if (checkIntersect(x,y,w,h, CHILDREN[i].BoundX, CHILDREN[i].BoundY,CHILDREN[i].BoundWidth,CHILDREN[i].BoundHeight)) {
+                    if (!this.CHILDREN[i].forEach(x,y,w,h, call)) return 0;
+                }
+            }
+
+        }
+        return 1;
+    }
+
