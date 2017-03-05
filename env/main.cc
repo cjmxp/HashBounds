@@ -162,7 +162,7 @@ void Grid::insert(int x,int y,int w,int h,int node) { // change int node.
             for (int i = k1y; i <= k2y; ++i) {
 
                 var ke = x | i;
-                DATA[ke].set(node._HashID,node);
+                DATA[ke]->set(node._HashID,node);
             }
 
         }
