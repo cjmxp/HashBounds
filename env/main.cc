@@ -100,6 +100,8 @@ class Grid {
   std::unordered_map<int, Grid*> DATA;
   void init(int,int,int,int,Grid*);
   int get(int,int,int,int,int (*)(int));
+  void insert(int,int,int,int,int);
+  void delete(int);
 };
 void Grid::init(int power, int level, int size, int min, Grid* prev) {
   POWER = power;
@@ -154,8 +156,8 @@ void Grid::insert(int x,int y,int w,int h,int node) { // change int node.
   int k1y = y1 >> POWER;
   int k2x = x2 >> POWER;
   int k2y = y2 >> POWER;
-   node.hash.k1 = k1;
-   node.hash.k2 = k2;
+   node.hash.k1 = {k1x,k1y};
+   node.hash.k2 = {k2x,k2y};
    node.hash.level = this.LEVEL;
    for (int j = k1x; j <= k2x; ++j) {
             int x = j << 16;
@@ -167,4 +169,19 @@ void Grid::insert(int x,int y,int w,int h,int node) { // change int node.
 
         }
 }
+ void Grid::delete(int node) {  // change int node
+         int k1[] = node.hash.k1;
+        int k2[] = node.hash.k2;
+      
+        for (int j = k1[0]; j < k2[0]; ++j) {
+            int x = j << 16;
+            for (int i = k1[1]; i < k2[1]; ++i) {
 
+
+                var ke = x | i;
+
+                DATA[ke]->delete(node._HashID);
+            }
+
+        }
+    }
