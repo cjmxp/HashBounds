@@ -145,3 +145,26 @@ int Grid::get(int x, int y, int w, int h, int (*call)(int)) {
     }
   return 1;
 }
+void Grid::insert(int x,int y,int w,int h,int node) { // change int node.
+  int x1 = x;
+  int y1 = y;
+  int x2 = x + w;
+  int y2 = y + h; 
+  int k1x = x1 >> POWER;
+  int k1y = y1 >> POWER;
+  int k2x = x2 >> POWER;
+  int k2y = y2 >> POWER;
+   node.hash.k1 = k1;
+   node.hash.k2 = k2;
+   node.hash.level = this.LEVEL;
+   for (int j = k1x; j <= k2x; ++j) {
+            int x = j << 16;
+            for (int i = k1y; i <= k2y; ++i) {
+
+                var ke = x | i;
+                DATA[ke].set(node._HashID,node);
+            }
+
+        }
+}
+
