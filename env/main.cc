@@ -1,3 +1,5 @@
+#include <unordered_map>
+
 class Holder {
   public:
     Holder* PARENT;
@@ -14,7 +16,7 @@ class Holder {
     void sub(void);
     void forEach(int,int,int,int,void (*)(int));
     int every(int,int,int,int,int(*)(int));
-}
+};
 void Holder::init(Holder* parent,int x, int y, int power, int lvl) {
   PARENT = parent;
   PARENT->CHILDREN[PARENT->ChildIndex++] = this;
@@ -77,4 +79,69 @@ int Holder::every(int x, int y, int w, int h,int (*call)(int)) {
         }
         return 1;
     }
+class FakeHolder {
+  public:
+    Holder* CHILDREN[4];
+    int ChildIndex = 0;
+    void add(void);
+    void sub(void);
+  
+};
+void FakeHolder::add(void) {
+  
+}
+void FakeHolder::sub(void) {
+  
+}
+class Grid {
+ public:
+  int POWER,LEVEL,SIZE,MIN;
+  Grid* PREV;
+  std::unordered_map<int, Grid*> DATA;
+  void init(int,int,int,int,Grid*);
+  int get(int,int,int,int,int (*)(int));
+};
+void Grid::init(int power, int level, int size, int min, Grid* prev) {
+  POWER = power;
+  LEVEL = level;
+  SIZE = size;
+  MIN = min * -1;
+  PREV = prev;
+  for (int j = MIN; j <= SIZE; ++j) {
+    int x = j << 16;
+    int bx = (j >> 1) << 16;
+      for (int i = MIN; i <= SIZE; ++i) {
+        int by = i >> 1;
+        int key = x | i;
+        Grid* pointer;
+        if (PREV) pointer = this.PREV.DATA[bx | by]; else {
+          FakeHolder fake;
+          pointer = &fake;
+        }
+        Holder holder;
+        Holder.init(pointer,j,i,POWER,LEVEL);
+        DATA.insert({key,holder});
+      }
+  }
+}
+int Grid::get(int x, int y, int w, int h, int (*call)(int)) {
+            int x1 = x;
+            int y1 = y;
+            int x2 = x + w;
+            int y2 = y + h;
+            int k1x = x1 >> POWER;
+            int k1y = y1 >> POWER;
+            int k2x = x2 >> POWER;
+            int k2y = y2 >> POWER;
+    for (int j = k1x; j <= k2x; ++j) {
 
+            int x = j << 16;
+      for (int i = k1y; i <= k2y; ++i) {
+     int key = x | i;
+         if (DATA[key]) {
+                    if (!call(DATA[key])) return 0;
+          }
+      }
+    }
+  return 1;
+}
