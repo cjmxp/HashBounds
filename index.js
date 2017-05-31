@@ -27,14 +27,14 @@ module.exports = class HashBounds {
         this.MIN = power;
         this.LEVELS = []
         this.lastid = 0;
-           this.BASE = false;
+        this.BASE = false;
         this.createLevels()
-        this.SQRT = [];
-        this.setupSQRT()
+        this.log2 = [];
+        this.setupLog2()
     }
-    setupSQRT() {
-        for (var i = 0; i < 255; ++i) {
-            this.SQRT.push(Math.floor(Math.sqrt(i)))
+    setupLog2() {
+        for (var i = 0; i < 64; ++i) {
+            this.log2.push(Math.floor(Math.log2(i + 1)))
         }
     }
     createLevels() {
@@ -43,7 +43,7 @@ module.exports = class HashBounds {
         var last = false;
         for (var i = this.LVL - 1; i >= 0; --i) {
             var a = this.INITIAL + i;
-var b = 1 << a;
+            var b = 1 << a;
             var grid = new Grid(a, i, Math.ceil(this.MAX / b), Math.ceil(this.MINC / b), last)
             if (!this.BASE) this.BASE = grid;
             this.LEVELS[i] = grid;
@@ -68,7 +68,7 @@ var b = 1 << a;
             return;
         }
 
-        var index = this.SQRT[(node.bounds.width + node.bounds.height) >> this.MIN]
+        var index = this.log2[(Math.max(node.bounds.width, node.bounds.height) >> this.MIN)]
         if (index >= this.LVL) index = this.LVL - 1;
 
         node._HashIndex = index;
@@ -89,15 +89,15 @@ var b = 1 << a;
         return this.BASE.toArray(bounds);
     }
     every(bounds, call) {
-            return this.BASE.every(bounds,call);
+        return this.BASE.every(bounds, call);
     }
     forEach(bounds, call) {
-  
-        
-        this.BASE.forEach(bounds,call) 
-               
-        
-    
+
+
+        this.BASE.forEach(bounds, call)
+
+
+
     }
 
 }
