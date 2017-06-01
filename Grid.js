@@ -41,10 +41,15 @@ module.exports = class Grid {
                 var key = this._getKey(x, i);
 
 
-          if (this.PREV) var l = this.PREV.DATA[this._getKey(bx, by)]; else
-                  var l = {CHILDREN: [],add: function() {},sub: function() {}}
-               
-                this.DATA[key] = new Holder(l, j, i, this.POWER, this.LVL);
+                if (this.PREV) var l = this.PREV.DATA[this._getKey(bx, by)];
+                else
+                    var l = {
+                        CHILDREN: [],
+                        add: function () {},
+                        sub: function () {}
+                    }
+
+                this.DATA[key] = new Holder(l, j, i, this.POWER, this.LEVEL);
 
             }
         }
@@ -101,22 +106,22 @@ module.exports = class Grid {
         node.hash.k1 = k1
         node.hash.k2 = k2
         node.hash.level = this.LEVEL;
- 
+
         for (var j = k1.x; j <= k2.x; ++j) {
             var x = j << 16;
             for (var i = k1.y; i <= k2.y; ++i) {
 
                 var ke = this._getKey(x, i);
-       
+
                 // console.log(ke)
-                this.DATA[ke].set(node._HashID,node)
+                this.DATA[ke].set(node._HashID, node)
             }
 
         }
         return true;
     }
-    delete(node) {  
-         var k1 = node.hash.k1
+    delete(node) {
+        var k1 = node.hash.k1
         var k2 = node.hash.k2
         var lenX = k2.x + 1,
             lenY = k2.y + 1;
@@ -132,25 +137,25 @@ module.exports = class Grid {
 
         }
     }
-    toArray( bounds) {
+    toArray(bounds) {
         var hsh = {};
-var array = [];
+        var array = [];
         this._get(bounds, function (cell) {
 
             cell.forEach(bounds, function (obj) {
                 if (hsh[obj._HashID]) return;
                 hsh[obj._HashID] = true;
                 array.push(obj);
-              
+
             })
             return true;
         })
-           return array;
+        return array;
     }
     every(bounds, call) {
         var hsh = {};
 
-       return this._get(bounds, function (cell) {
+        return this._get(bounds, function (cell) {
 
             return cell.every(bounds, function (obj, i) {
                 if (hsh[obj._HashID]) return true;
@@ -170,7 +175,7 @@ var array = [];
                 if (hsh[obj._HashID]) return;
                 hsh[obj._HashID] = true;
                 call(obj);
-            
+
             })
             return true;
         })

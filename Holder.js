@@ -17,7 +17,7 @@ var QuickMapV2 = require('./QuickMapV2.js')
 module.exports = class Holder {
     constructor(parent, x, y, power, lvl) {
         this.PARENT = parent;
-         this.PARENT.CHILDREN.push(this)
+        this.PARENT.CHILDREN.push(this)
         this.MAP = new QuickMapV2();
         this.POWER = power;
         this.LVL = lvl
@@ -52,52 +52,126 @@ module.exports = class Holder {
 
     }
 
-    set(id,node) {
+    set(id, node) {
 
-        this.MAP.set(id,node)
+        this.MAP.set(id, node)
         this.add()
     }
     add() {
         ++this.LEN;
-            this.PARENT.add();
+        this.PARENT.add();
 
-        
+
     }
 
+    getQuad(bounds, bounds2) {
+        if (!this.CHILDREN[0]) return -2;
+
+        var minX = bounds.x,
+            minY = bounds.y,
+            maxX = bounds.x + bounds.width,
+            maxY = bounds.y + bounds.height,
+            minX2 = bounds2.x,
+            minY2 = bounds2.y,
+            maxX2 = bounds2.x + bounds2.width,
+            maxY2 = bounds2.y + bounds2.height,
+            halfY = bounds2.y + (bounds2.height >> 1),
+            halfX = bounds2.x + (bounds2.width >> 1);
+
+
+        var top = maxY <= halfY;
+        var bottom = minY > halfY;
+        var left = maxX <= halfX;
+        var right = minX > halfX;
+
+
+        if (top) {
+            if (left) return [0];
+            else if (right) return [1];
+            return [0, 1];
+        } else if (bottom) {
+            if (left) return [2];
+            else if (right) return [3];
+            return [2, 3];
+        }
+
+        if (left) {
+            return [0, 2];
+        } else if (right) {
+            return [1, 3];
+        }
+
+        if (bounds.width < bounds2.width || bounds.height < bounds2.height) return [0, 1, 2, 3];
+        return -1; // too big
+    }
+
+
+
+    forEachAll(call) {
+        if (!this.LEN) return;
+        this.MAP.forEach(call)
+
+        for (var i = 0; i < this.CHILDREN.length; ++i) {
+            this.CHILDREN[i].forEachAll(call)
+        }
+
+
+    }
+    forEach(bounds, call) {
+        if (!this.LEN) return;
+
+
+        var quads = this.getQuad(bounds, this.BOUNDS)
+
+        if (quads === -1) return this.forEachAll(call);
+
+        this.MAP.forEach(call)
+
+        if (quads === -2) return
+
+        quads.forEach((q) => {
+            var child = this.CHILDREN[q];
+            if (child) child.forEach(bounds, call)
+        })
+
+
+        return;
+    }
     every(bounds, call) {
         if (!this.LEN) return true;
-        if (!this.MAP.every(call)) return false;
-        if (this.CHILDREN[0]) {
-            for (var i = 0; i < this.CHILDREN.length; ++i) {
-                if (this.checkIntersect(bounds, this.CHILDREN[i].BOUNDS)) {
-                    if (!this.CHILDREN[i].every(bounds, call)) return false;
-                }
-            }
 
+        var quads = this.getQuad(bounds, this.BOUNDS)
+
+        if (quads === -1) return this.everyAll(call);
+
+        if (!this.MAP.every(call)) return false;
+
+        if (quads === -2) return true;
+
+        return quads.every((q) => {
+            var child = this.CHILDREN[q];
+            if (!child) return true;
+            return this.CHILDREN[i].every(bounds, call)
+        })
+    }
+    everyAll(call) {
+        if (!this.LEN) return true;
+        if (!this.MAP.every(call)) return false;
+        for (var i = 0; i < this.CHILDREN.length; ++i) {
+            if (!this.CHILDREN[i].everyAll(call)) return false;
         }
         return true;
     }
-         forEach(bounds, call) {
-        if (!this.LEN) return;
-           this.MAP.forEach(call)
-        if (this.CHILDREN[0]) {
-            for (var i = 0; i < this.CHILDREN.length; ++i) {
-                if (this.checkIntersect(bounds, this.CHILDREN[i].BOUNDS)) {
-                    this.CHILDREN[i].forEach(bounds, call)
-                }
-            }
 
-        }
-        return;
-    }
     sub() {
         --this.LEN;
-            this.PARENT.sub();
+        this.PARENT.sub();
     }
     delete(id) {
         this.MAP.delete(id)
         this.sub()
     }
-   
+
+
 
 }
