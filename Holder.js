@@ -87,18 +87,18 @@ module.exports = class Holder {
 
         if (top) {
             if (left) return [0];
-            else if (right) return [1];
-            return [0, 1];
+            else if (right) return [2];
+            return [0, 2];
         } else if (bottom) {
-            if (left) return [2];
+            if (left) return [1];
             else if (right) return [3];
-            return [2, 3];
+            return [1, 3];
         }
 
         if (left) {
-            return [0, 2];
+            return [0, 1];
         } else if (right) {
-            return [1, 3];
+            return [2, 3];
         }
 
         if (bounds.width < bounds2.width || bounds.height < bounds2.height) return [0, 1, 2, 3];
