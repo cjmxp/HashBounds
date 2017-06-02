@@ -52,11 +52,7 @@ module.exports = class Holder {
 
     }
 
-    set(node) {
 
-        this.MAP.push(node)
-        this.add()
-    }
     add() {
         ++this.LEN;
         this.PARENT.add();
@@ -129,10 +125,10 @@ module.exports = class Holder {
 
         if (quads === -2) return
 
-        quads.forEach((q) => {
-            var child = this.CHILDREN[q];
+        for (var i = 0, l = quads.length; i < l; i++) {
+            var child = this.CHILDREN[quads[i]];
             if (child) child.forEach(bounds, call)
-        })
+        }
 
 
         return;
@@ -169,8 +165,14 @@ module.exports = class Holder {
     }
     delete(node) {
         var ind = this.MAP.indexOf(node)
-        this.MAP.splice(ind, 1);
+        this.MAP[ind] = this.MAP[this.MAP.length - 1];
+        this.MAP.pop();
         this.sub()
+    }
+    set(node) {
+
+        this.MAP.push(node)
+        this.add()
     }
 
 
