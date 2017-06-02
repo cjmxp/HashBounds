@@ -129,7 +129,8 @@ class Holder {
     constructor(parent, x, y, power, lvl) {
         this.PARENT = parent;
         this.PARENT.CHILDREN.push(this)
-        this.MAP = new QuickMapV2();
+            // this.MAP = new QuickMapV2();
+        this.MAP = [];
         this.POWER = power;
         this.LVL = lvl
         this.LEN = 0;
@@ -163,10 +164,15 @@ class Holder {
 
     }
 
-    set(id, node) {
+    set(node) {
 
-        this.MAP.set(id, node)
+        this.MAP.push(node);
         this.add()
+    }
+    delete(node) {
+        var ind = this.MAP.indexOf(node)
+        this.MAP.splice(ind, 1);
+        this.sub()
     }
     add() {
         ++this.LEN;
@@ -278,10 +284,7 @@ class Holder {
         --this.LEN;
         this.PARENT.sub();
     }
-    delete(id) {
-        this.MAP.delete(id)
-        this.sub()
-    }
+
 
 }
 class Grid {
@@ -381,25 +384,30 @@ class Grid {
                 var ke = this._getKey(x, i);
 
                 // console.log(ke)
-                this.DATA[ke].set(node._HashID, node)
+                this.DATA[ke].set(node)
+
+
+
             }
 
         }
+
+
         return true;
     }
     delete(node) {
         var k1 = node.hash.k1
         var k2 = node.hash.k2
-        var lenX = k2.x + 1,
-            lenY = k2.y + 1;
-        for (var j = k1.x; j < lenX; ++j) {
+        var lenX = k2.x,
+            lenY = k2.y;
+        for (var j = k1.x; j <= lenX; ++j) {
             var x = j << 16;
-            for (var i = k1.y; i < lenY; ++i) {
+            for (var i = k1.y; i <= lenY; ++i) {
 
 
                 var ke = this._getKey(x, i);
 
-                this.DATA[ke].delete(node._HashID)
+                this.DATA[ke].delete(node)
             }
 
         }

@@ -18,7 +18,7 @@ module.exports = class Holder {
     constructor(parent, x, y, power, lvl) {
         this.PARENT = parent;
         this.PARENT.CHILDREN.push(this)
-        this.MAP = new QuickMapV2();
+        this.MAP = [];
         this.POWER = power;
         this.LVL = lvl
         this.LEN = 0;
@@ -52,9 +52,9 @@ module.exports = class Holder {
 
     }
 
-    set(id, node) {
+    set(node) {
 
-        this.MAP.set(id, node)
+        this.MAP.push(node)
         this.add()
     }
     add() {
@@ -167,8 +167,9 @@ module.exports = class Holder {
         --this.LEN;
         this.PARENT.sub();
     }
-    delete(id) {
-        this.MAP.delete(id)
+    delete(node) {
+        var ind = this.MAP.indexOf(node)
+        this.MAP.splice(ind, 1);
         this.sub()
     }
 

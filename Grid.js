@@ -114,7 +114,7 @@ module.exports = class Grid {
                 var ke = this._getKey(x, i);
 
                 // console.log(ke)
-                this.DATA[ke].set(node._HashID, node)
+                this.DATA[ke].set(node)
             }
 
         }
@@ -132,7 +132,7 @@ module.exports = class Grid {
 
                 var ke = this._getKey(x, i);
 
-                this.DATA[ke].delete(node._HashID)
+                this.DATA[ke].delete(node)
             }
 
         }
