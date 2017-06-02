@@ -45,8 +45,8 @@
         (function (w, M) {
             var config = {
                 numberOfObjects: 200,
-                sizePowerOfTwo: 4,
-                levels: 3,
+                sizePowerOfTwo: 3,
+                levels: 4,
                 minSize: 1,
                 maxSize: 30,
                 searchSize: 20
@@ -192,7 +192,7 @@
 
                     r += step
                     g -= step
-                    drawGrid(ctx, tree.MAX, tree.MAX, Math.pow(2, tree.INITIAL + i), "rgba(" + (r >> 0) + "," + (g >> 0) + ",0,0.1)")
+                    drawGrid(ctx, tree.MAX, tree.MAX, Math.pow(2, tree.INITIAL + i + 1), "rgba(" + (r >> 0) + "," + (g >> 0) + ",0,0.1)")
 
 
 
