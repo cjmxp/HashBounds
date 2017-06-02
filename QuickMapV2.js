@@ -3,8 +3,6 @@
 No license here!
 
 */
-var pool = false;
-
 class Root {
     constructor() {
 
@@ -18,13 +16,9 @@ class Root {
 
 }
 
-
 class ListNode {
-    constructor(child, parent, node, id) {
-        this.CHILD = child;
-        this.NODE = node;
-        this.ID = id;
-        this.PARENT = parent;
+    constructor() {
+
     }
     init(child, parent, node, id) {
         this.CHILD = child;
@@ -40,7 +34,7 @@ class ListNode {
         this.NODE = null;
         this.ID = null;
         this.PARENT = null;
-        pool.dest(this);
+        ListNode.dest(this);
     }
     forEach(call) {
         call(this.NODE, this.ID);
@@ -53,7 +47,7 @@ class ListNode {
     }
 
 }
-pool = new Pool()
+
 
 function Pool() {
     this.pool = [];
@@ -66,7 +60,8 @@ function pnew(a, b, c, d) {
     var newObj = null;
 
     if (this.size === 0) {
-        newObj = pool.pnew(a, b, c, d);
+        newObj = new this();
+        newObj.init(a, b, c, d)
     } else {
         newObj = this.pool[--this.size];
         this.pool[this.size] = null;
@@ -79,13 +74,20 @@ function dest(obj) {
 
     this.pool[this.size++] = obj
 }
-module.exports = class QuickMapV2 {
+ListNode.Pool = Pool;
+
+ListNode.Pool();
+
+
+class QuickMapV2 {
     constructor() {
         this.CHILD = new Root()
         this.ARRAY = [];
+
     }
+
     set(id, node) {
-        var n = new ListNode(this.CHILD, this, node, id)
+        var n = ListNode.pnew(this.CHILD, this, node, id);
         this.CHILD.PARENT = n;
         this.CHILD = n;
         this.ARRAY[id] = n;

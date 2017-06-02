@@ -30,13 +30,10 @@ class Root {
     }
 
 }
-var pool = false;
+
 class ListNode {
-    constructor(child, parent, node, id) {
-        this.CHILD = child;
-        this.NODE = node;
-        this.ID = id;
-        this.PARENT = parent;
+    constructor() {
+
     }
     init(child, parent, node, id) {
         this.CHILD = child;
@@ -52,7 +49,7 @@ class ListNode {
         this.NODE = null;
         this.ID = null;
         this.PARENT = null;
-        pool.dest(this);
+        ListNode.dest(this);
     }
     forEach(call) {
         call(this.NODE, this.ID);
@@ -65,7 +62,7 @@ class ListNode {
     }
 
 }
-pool = new Pool()
+
 
 function Pool() {
     this.pool = [];
@@ -78,7 +75,8 @@ function pnew(a, b, c, d) {
     var newObj = null;
 
     if (this.size === 0) {
-        newObj = new ListNode(a, b, c, d);
+        newObj = new this();
+        newObj.init(a, b, c, d)
     } else {
         newObj = this.pool[--this.size];
         this.pool[this.size] = null;
@@ -91,6 +89,11 @@ function dest(obj) {
 
     this.pool[this.size++] = obj
 }
+ListNode.Pool = Pool;
+
+ListNode.Pool();
+
+
 class QuickMapV2 {
     constructor() {
         this.CHILD = new Root()
@@ -99,7 +102,7 @@ class QuickMapV2 {
     }
 
     set(id, node) {
-        var n = pool.pnew(this.CHILD, this, node, id);
+        var n = ListNode.pnew(this.CHILD, this, node, id);
         this.CHILD.PARENT = n;
         this.CHILD = n;
         this.ARRAY[id] = n;
