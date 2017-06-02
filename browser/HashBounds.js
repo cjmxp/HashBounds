@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 class Root {
     constructor() {
 
@@ -29,7 +30,7 @@ class Root {
     }
 
 }
-
+var pool = false;
 class ListNode {
     constructor(child, parent, node, id) {
         this.CHILD = child;
@@ -37,9 +38,21 @@ class ListNode {
         this.ID = id;
         this.PARENT = parent;
     }
+    init(child, parent, node, id) {
+        this.CHILD = child;
+        this.NODE = node;
+        this.ID = id;
+        this.PARENT = parent;
+    }
+
     destroy() {
         this.PARENT.CHILD = this.CHILD;
         this.CHILD.PARENT = this.PARENT;
+        this.CHILD = null;
+        this.NODE = null;
+        this.ID = null;
+        this.PARENT = null;
+        pool.dest(this);
     }
     forEach(call) {
         call(this.NODE, this.ID);
@@ -52,13 +65,41 @@ class ListNode {
     }
 
 }
+pool = new Pool()
+
+function Pool() {
+    this.pool = [];
+    this.size = 0;
+    this.pnew = pnew;
+    this.dest = dest
+}
+
+function pnew(a, b, c, d) {
+    var newObj = null;
+
+    if (this.size === 0) {
+        newObj = new ListNode(a, b, c, d);
+    } else {
+        newObj = this.pool[--this.size];
+        this.pool[this.size] = null;
+        newObj.init(a, b, c, d)
+    }
+    return newObj;
+}
+
+function dest(obj) {
+
+    this.pool[this.size++] = obj
+}
 class QuickMapV2 {
     constructor() {
         this.CHILD = new Root()
         this.ARRAY = [];
+
     }
+
     set(id, node) {
-        var n = new ListNode(this.CHILD, this, node, id)
+        var n = pool.pnew(this.CHILD, this, node, id);
         this.CHILD.PARENT = n;
         this.CHILD = n;
         this.ARRAY[id] = n;
