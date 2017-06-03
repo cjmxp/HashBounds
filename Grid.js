@@ -18,37 +18,37 @@
 */
 var Holder = require('./Holder.js')
 module.exports = class Grid {
-    constructor(g, p, size, minc, prev) {
+    constructor(g, p, size, prev) {
         this.POWER = g;
         this.LEVEL = p;
         this.PREV = prev;
         this.SIZE = size;
-        this.MIN = minc * -1;
+
         this.DATA = {};
         this.init()
     }
+
     init() {
         if (this.SIZE >= 65535) {
             throw "Maximum amount of buckets are 65535^2"
         } // Max limit is 65535 (16 bits) 
         // console.log(this.SIZE)
-        for (var j = this.MIN; j <= this.SIZE; ++j) {
-            var x = j << 16
-            var bx = (j >> 1) << 16;
-            for (var i = this.MIN; i <= this.SIZE; ++i) {
+        for (var j = 0; j < this.SIZE; ++j) {
+            var x = j * this.SIZE;
+            if (this.PREV) var bx = (j >> 1) * this.PREV.SIZE;
+            for (var i = 0; i < this.SIZE; ++i) {
 
-                var by = i >> 1
-                var key = this._getKey(x, i);
+                var by = i >> 1;
+                var key = x + i;
 
 
-                if (this.PREV) var l = this.PREV.DATA[this._getKey(bx, by)];
+                if (this.PREV) var l = this.PREV.DATA[bx + by];
                 else
                     var l = {
                         CHILDREN: [],
                         add: function () {},
                         sub: function () {}
                     }
-
                 this.DATA[key] = new Holder(l, j, i, this.POWER, this.LEVEL);
 
             }
@@ -76,12 +76,12 @@ module.exports = class Grid {
 
         for (var j = k1.x; j <= k2.x; ++j) {
 
-            var x = j << 16;
+            var x = j * this.SIZE;
 
             for (var i = k1.y; i <= k2.y; ++i) {
 
 
-                var key = this._getKey(x, i);
+                var key = x + i;
                 if (this.DATA[key]) {
                     if (!call(this.DATA[key])) return false
                 }
@@ -108,29 +108,34 @@ module.exports = class Grid {
         node.hash.level = this.LEVEL;
 
         for (var j = k1.x; j <= k2.x; ++j) {
-            var x = j << 16;
+            var x = j * this.SIZE;
             for (var i = k1.y; i <= k2.y; ++i) {
 
-                var ke = this._getKey(x, i);
+                var ke = x + i;
 
                 // console.log(ke)
                 this.DATA[ke].set(node)
+
+
+
             }
 
         }
+
+
         return true;
     }
     delete(node) {
         var k1 = node.hash.k1
         var k2 = node.hash.k2
-        var lenX = k2.x + 1,
-            lenY = k2.y + 1;
-        for (var j = k1.x; j < lenX; ++j) {
-            var x = j << 16;
-            for (var i = k1.y; i < lenY; ++i) {
+        var lenX = k2.x,
+            lenY = k2.y;
+        for (var j = k1.x; j <= lenX; ++j) {
+            var x = j * this.SIZE;
+            for (var i = k1.y; i <= lenY; ++i) {
 
 
-                var ke = this._getKey(x, i);
+                var ke = x + i;
 
                 this.DATA[ke].delete(node)
             }
