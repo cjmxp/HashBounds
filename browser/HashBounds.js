@@ -26,7 +26,7 @@ class Holder {
         this.MAP = [];
         this.POWER = power;
         this.LVL = lvl
-        this.LEN = 0;
+        this.LEN = 0; // problem with lots of objs
         this.X = x;
         this.Y = y;
         this.BOUNDS = {
@@ -141,10 +141,10 @@ class Holder {
 
         if (quads === -2) return
 
-        quads.forEach((q) => {
-            var child = this.CHILDREN[q];
+        for (var i = 0, l = quads.length; i < l; i++) {
+            var child = this.CHILDREN[quads[i]];
             if (child) child.forEach(bounds, call)
-        })
+        }
 
 
         return;
@@ -163,7 +163,7 @@ class Holder {
         return quads.every((q) => {
             var child = this.CHILDREN[q];
             if (!child) return true;
-            return this.CHILDREN[i].every(bounds, call)
+            return child.every(bounds, call)
         })
     }
     everyAll(call) {
@@ -256,7 +256,7 @@ class Grid {
         return true;
     }
 
-    insert(node) {
+    insert2(node) {
 
         //   var a = this.getKey(node.bounds.width, node.bounds.height);
         // if (a.x + a.y >= 2 && this.LEVEL != 0) return false;
@@ -367,7 +367,7 @@ window.HashBounds = class HashBounds {
         this.setupLog2()
     }
     setupLog2() {
-        for (var i = 0; i < 64; ++i) {
+        for (var i = 0; i < 32768; ++i) {
             this.log2.push(Math.floor(Math.log2(i + 1)))
         }
     }
@@ -393,21 +393,28 @@ window.HashBounds = class HashBounds {
         this.insert(node)
     }
     insert(node) {
-        if (node.hash) throw "ERR: A node cannot be already in a hash!"
+        if (node._IsInHash) throw "ERR: A node cannot be already in a hash!"
         var bounds = node.bounds;
-        node.hash = {}
-        if (!node._HashID) node._HashID = ++this.lastid;
-        if (node._HashSize == node.bounds.width + node.bounds.height) {
-            this.LEVELS[node._HashIndex].insert(node);
+        node._IsInHash = true;
+
+        if (node._HashSizeX === bounds.width && node._HashSizeY === bounds.height) {
+            this.LEVELS[node._HashIndex].insert2(node);
             return;
         }
 
-        var index = this.log2[(Math.max(node.bounds.width, node.bounds.height) >> this.MIN)]
-        if (index >= this.LVL) index = this.LVL - 1;
+        if (!node._HashID) {
+            node._HashID = ++this.lastid;
+            node.hash = {};
+        }
+
+        var index = this.log2[(Math.max(bounds.width, bounds.height) >> this.MIN)]
+        if (index === undefined || index >= this.LVL) index = this.LVL - 1;
 
         node._HashIndex = index;
-        node._HashSize = node.bounds.width + node.bounds.height;
-        this.LEVELS[index].insert(node);
+        node._HashSizeX = bounds.width;
+        node._HashSizeY = bounds.height;
+        
+        this.LEVELS[index].insert2(node);
         //for (var i = 0; i < len; ++i) {
         //   if (this.LEVELS[len - i - 1].insert(node)) break;
         //}
@@ -415,9 +422,9 @@ window.HashBounds = class HashBounds {
 
 
     delete(node) {
-        if (!node.hash) throw "ERR: Node is not in a hash!"
+        if (!node._IsInHash) throw "ERR: Node is not in a hash!"
         this.LEVELS[node.hash.level].delete(node)
-        node.hash = null;
+        node._IsInHash = false;
     }
     toArray(bounds) {
         return this.BASE.toArray(bounds);

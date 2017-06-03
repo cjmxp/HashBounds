@@ -32,7 +32,7 @@ module.exports = class HashBounds {
         this.setupLog2()
     }
     setupLog2() {
-        for (var i = 0; i < 64; ++i) {
+        for (var i = 0; i < 32768; ++i) {
             this.log2.push(Math.floor(Math.log2(i + 1)))
         }
     }
@@ -68,7 +68,7 @@ module.exports = class HashBounds {
         }
 
         var index = this.log2[(Math.max(node.bounds.width, node.bounds.height) >> this.MIN)]
-        if (index >= this.LVL) index = this.LVL - 1;
+        if (index === undefined || index >= this.LVL) index = this.LVL - 1;
 
         node._HashIndex = index;
         node._HashSize = node.bounds.width + node.bounds.height;
