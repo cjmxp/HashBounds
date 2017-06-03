@@ -271,22 +271,13 @@ class Grid {
         node.hash.k1 = k1
         node.hash.k2 = k2
         node.hash.level = this.LEVEL;
-
         for (var j = k1.x; j <= k2.x; ++j) {
             var x = j * this.SIZE;
             for (var i = k1.y; i <= k2.y; ++i) {
-
                 var ke = x + i;
-
-                // console.log(ke)
                 this.DATA[ke].set(node)
-
-
-
             }
-
         }
-
 
         return true;
     }
