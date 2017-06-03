@@ -10,7 +10,7 @@ A super efficient collision check reducer. Also a good snack made out of potato 
 # Usage
 > npm install hashbounds
 
-##### Hashbounds(basecellsize,lvls,max,min)
+##### Hashbounds(basecellsize,lvls,max)
 
 ```js
 var HashBounds = require('hashbounds')
@@ -70,13 +70,3 @@ var obj = {
 5. toArray(bounds): Get an array of objects in certain bounds
 6. forEach(bounds,call): Loop through objects in certain bounds
 7. every(bounds,call): Same a .forEach(bounds), but stops execution when returning false
-
-## Other Info
-
-* insert() method very fast (264,867 ops/sec, efficiency - O(1))
-* delete(), less efficient than insert (9,201 ops/sec, efficiency - O(1)).
-* update(), okay (8,541 ops/sec)
-* forEach(), fast (Fast as a quadtree)
-* More efficient than a quadtree
-* More efficient than a spatial hash
-* More efficient than a "normal" heiracheal hash
