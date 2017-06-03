@@ -13,7 +13,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-var QuickMapV2 = require('./QuickMapV2.js')
 module.exports = class Holder {
     constructor(parent, x, y, power, lvl) {
         this.PARENT = parent;
