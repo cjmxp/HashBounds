@@ -16,24 +16,28 @@ A super efficient collision check reducer. Also a good snack made out of potato 
 var HashBounds = require('hashbounds')
 var hashBounds = new HashBounds(10,2,100) // size of base cells (In squares of 2), amount of levels, maximum value
 var node = {
-    bounds: {
-        x: 10,
-        y: 10,
-        width: 5,
-        height: 3
-    }
+    hello: "world"
 }
-hashBounds.insert(node) // add node
-
-node.bounds.x = 4
-hashBounds.update(node) // Update node (for moving cells)
 var bounds = {
+    x: 10,
+    y: 10,
+    width: 5,
+    height: 3
+}
+
+hashBounds.insert(node,bounds) // add node
+
+bounds.x = 4
+
+hashBounds.update(node,bounds) // Update node (for moving objects)
+
+var searchBounds = {
     x: 3,
     y: 0,
     width: 10,
     height: 10
 }
-var nodes = hashBounds.toArray(bounds) // gets nodes that is in/near the bounds
+var nodes = hashBounds.toArray(searchBounds) // gets nodes that is in/near the bounds
 console.log(nodes.length)
 hashBounds.delete(node)// delete node
 ```
@@ -44,17 +48,27 @@ hashBounds.delete(node)// delete node
 https://github.com/ThreeLetters/HashBounds/blob/master/EXPLANATION.md
 
 ## Requirements
-In order for this to work, all objects inserted must have include `bounds`.
+In order for this to work, you must pass a `bounds` object into the insert/update/query functions
 
 ```js
-var obj = {
-    bounds: {
+
+// Bounds can look like this:
+
+var bounds = {
         x: 0, // x
         y: 0, // y
         width: 5, // width
         height: 5
     }
-}
+    
+// Or look like this:
+
+var bounds = {
+        minX: 0,
+        minY: 0,
+        maxX: 5,
+        maxY: 5
+    }
 ```
 
 ## Browser
@@ -63,10 +77,10 @@ var obj = {
 
 ## Methods:
 
-1. insert(node): Insert a node into the map
+1. insert(node,bounds): Insert a node into the map
 2. delete(node): Remove a node from the map
-3. update(node): Update the node in the map
+3. update(node,bounds): Update the node in the map
 4. clear(): Clear all nodes in the map
 5. toArray(bounds): Get an array of objects in certain bounds
 6. forEach(bounds,call): Loop through objects in certain bounds
-7. every(bounds,call): Same a .forEach(bounds), but stops execution when returning false
+7. every(bounds,call): Same as .forEach(bounds), but stops execution when returning false

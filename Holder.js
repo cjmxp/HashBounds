@@ -13,6 +13,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 module.exports = class Holder {
     constructor(parent, x, y, power, lvl) {
         this.PARENT = parent;
@@ -30,7 +31,6 @@ module.exports = class Holder {
             height: 1 << power
         }
         this.CHILDREN = []
-
     }
     checkIntersect(r1, r2) {
         var mx1 = r1.x + r1.width,
@@ -62,14 +62,14 @@ module.exports = class Holder {
     getQuad(bounds, bounds2) {
         if (!this.CHILDREN[0]) return -2;
 
-        var minX = bounds.x,
-            minY = bounds.y,
-            maxX = bounds.x + bounds.width,
-            maxY = bounds.y + bounds.height,
-            minX2 = bounds2.x,
-            minY2 = bounds2.y,
-            maxX2 = bounds2.x + bounds2.width,
-            maxY2 = bounds2.y + bounds2.height,
+        var minX = bounds.minX,
+            minY = bounds.minX,
+            maxX = bounds.maxX,
+            maxY = bounds.maxY,
+            minX2 = bounds2.minX,
+            minY2 = bounds2.minY,
+            maxX2 = bounds2.maxX,
+            maxY2 = bounds2.maxY,
             halfY = bounds2.y + (bounds2.height >> 1),
             halfX = bounds2.x + (bounds2.width >> 1);
 
@@ -173,7 +173,4 @@ module.exports = class Holder {
         this.MAP.push(node)
         this.add()
     }
-
-
-
 }

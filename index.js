@@ -17,7 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var Grid = require('./Grid.js')
+var Grid = require('./Grid.js');
 module.exports = class HashBounds {
     constructor(power, lvl, max) {
         this.INITIAL = power;
@@ -39,7 +39,8 @@ module.exports = class HashBounds {
     }
     createLevels() {
         this.LEVELS = [];
-
+        this.BASE = null;
+        this.ID = Math.floor(Math.random() * 100000);
         var last = false;
         for (var i = this.LVL - 1; i >= 0; --i) {
             var a = this.INITIAL + i;
@@ -49,55 +50,88 @@ module.exports = class HashBounds {
             this.LEVELS[i] = grid;
             last = grid;
         }
-
     }
     clear() {
         this.createLevels();
     }
-    update(node) {
+    update(node, bounds) {
         this.delete(node)
-        this.insert(node)
+        this.insert(node, bounds)
     }
-    insert(node) {
-        if (node.hash) throw "ERR: A node cannot be already in a hash!"
-        var bounds = node.bounds;
-        node.hash = {}
-        if (!node._HashID) node._HashID = ++this.lastid;
-        if (node._HashSize == node.bounds.width + node.bounds.height) {
-            this.LEVELS[node._HashIndex].insert(node);
+    insert(node, bounds) {
+        if (node._HashParent === this.ID) throw "ERR: A node cannot be already in this hash!"; // check if it already is inserted
+
+        this.convertBounds(bounds);
+
+        if (node._HashParent !== this.ID) {
+            node._HashID = ++this.lastid;
+            node.hash = {}
+            node._HashParent = this.ID;
+        }
+
+        if (node._HashSizeX === bounds.width && node._HashSizeY === bounds.height) {
+            this.LEVELS[node._HashIndex].insert(node, bounds);
             return;
         }
 
-        var index = this.log2[(Math.max(node.bounds.width, node.bounds.height) >> this.MIN)]
+        var index = this.log2[(Math.max(bounds.width, bounds.height) >> this.MIN)]
         if (index === undefined) index = this.LVL - 1;
 
         node._HashIndex = index;
-        node._HashSize = node.bounds.width + node.bounds.height;
-        this.LEVELS[index].insert(node);
-        //for (var i = 0; i < len; ++i) {
-        //   if (this.LEVELS[len - i - 1].insert(node)) break;
-        //}
-    }
+        node._HashSizeX = bounds.width;
+        node._HashSizeY = bounds.height;
 
+        this.LEVELS[index].insert(node, bounds);
+    }
 
     delete(node) {
-        if (!node.hash) throw "ERR: Node is not in a hash!"
+        if (node._HashParent !== this.ID) throw "ERR: Node is not in this hash!"
         this.LEVELS[node.hash.level].delete(node)
-        node.hash = null;
+        node._HashParent = 0;
     }
     toArray(bounds) {
+        this.convertBounds(bounds);
+
         return this.BASE.toArray(bounds);
     }
     every(bounds, call) {
+        this.convertBounds(bounds);
+
         return this.BASE.every(bounds, call);
     }
     forEach(bounds, call) {
-
+        this.convertBounds(bounds);
 
         this.BASE.forEach(bounds, call)
-
-
-
     }
+    mmToPS(bounds) { // min-max to pos-size
+        bounds.x = bounds.minX;
+        bounds.y = bounds.minY;
+        bounds.width = bounds.maxX - bounds.minX;
+        bounds.height = bottom.maxY - bounds.minY;
+    }
+    psToMM(bounds) { // pos-size to min-max
 
+        bounds.minX = bounds.x;
+        bounds.minY = bounds.y;
+
+        bounds.maxX = bounds.x + bounds.width;
+        bounds.maxY = bounds.y + bounds.height;
+    }
+    convertBounds(bounds) { // convert for our purposes
+        if (bounds.TYPE === undefined) {
+            if (bounds.x !== undefined) {
+                this.psToMM(bounds);
+                bounds.type = 1;
+            } else {
+                this.mmToPs(bounds);
+                bounds.TYPE = 2;
+            }
+
+        } else if (bounds.TYPE === 1) {
+            this.psToMs(bounds);
+        } else if (bounds.TYPE === 2) {
+            this.mmToPs(bounds);
+        }
+    }
 }
