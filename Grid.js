@@ -29,13 +29,9 @@ module.exports = class Grid {
     }
 
     init() {
-        if (this.SIZE >= 65535) {
-            throw "Maximum amount of buckets are 65535^2"
-        } // Max limit is 65535 (16 bits) 
-        // console.log(this.SIZE)
         for (var j = 0; j < this.SIZE; ++j) {
             var x = j * this.SIZE;
-            if (this.PREV) var bx = (j >> 1) * this.PREV.SIZE;
+            if (this.PREV) var bx = (j / 2) * this.PREV.SIZE;
             for (var i = 0; i < this.SIZE; ++i) {
 
                 var by = i >> 1;
