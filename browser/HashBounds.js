@@ -430,7 +430,7 @@ class HashBounds {
         if (bounds.TYPE === undefined) {
             if (bounds.x !== undefined) {
                 this.psToMM(bounds);
-                bounds.type = 1;
+                bounds.TYPE = 1;
             } else {
                 this.mmToPs(bounds);
                 bounds.TYPE = 2;
