@@ -129,7 +129,7 @@ module.exports = class HashBounds {
             }
 
         } else if (bounds.TYPE === 1) {
-            this.psToMs(bounds);
+            this.psToMM(bounds);
         } else if (bounds.TYPE === 2) {
             this.mmToPs(bounds);
         }
