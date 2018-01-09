@@ -124,14 +124,14 @@ module.exports = class HashBounds {
                 this.psToMM(bounds);
                 bounds.TYPE = 1;
             } else {
-                this.mmToPs(bounds);
+                this.mmToPS(bounds);
                 bounds.TYPE = 2;
             }
 
         } else if (bounds.TYPE === 1) {
             this.psToMM(bounds);
         } else if (bounds.TYPE === 2) {
-            this.mmToPs(bounds);
+            this.mmToPS(bounds);
         }
     }
 }
